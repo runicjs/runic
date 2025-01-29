@@ -14,6 +14,31 @@ easy to understand and ergonomic to use.
 
 ## Development
 
+**Setup**
+
+```bash
+$ pnpm i
+```
+
+**Build package: Runic**
+
+```bash
+$ runic:build
+```
+**Build package: Runic React**
+
+```bash
+$ runic-react:build
+```
+
+**Publish all packages**
+
+```bash
+$ pnpm ci:publish
+```
+
+**Run example: Basic Counter**
+
 ```bash
 $ pnpm i
 $ pnpm example:basic-counter
