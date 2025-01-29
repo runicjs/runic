@@ -20,6 +20,19 @@ easy to understand and ergonomic to use.
 $ pnpm i
 ```
 
+**Run example: Basic Counter**
+
+```bash
+$ pnpm example:basic-counter
+# open http://localhost:5173/
+```
+
+**Publish all packages**
+
+```bash
+$ pnpm ci:publish
+```
+
 **Build package: Runic**
 
 ```bash
@@ -29,18 +42,4 @@ $ runic:build
 
 ```bash
 $ runic-react:build
-```
-
-**Publish all packages**
-
-```bash
-$ pnpm ci:publish
-```
-
-**Run example: Basic Counter**
-
-```bash
-$ pnpm i
-$ pnpm example:basic-counter
-# open http://localhost:5173/
 ```
