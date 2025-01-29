@@ -23,6 +23,7 @@ easy to understand and ergonomic to use.
 **runic**
 
 - [x] Implement `createStore`
+- [x] Implement `updateStores`
 - [ ] Write tests
 - [ ] Finalize the v0 API
 - [ ] Implement remaining functionality
