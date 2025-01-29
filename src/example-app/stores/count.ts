@@ -1,4 +1,4 @@
-import { createStore } from '../../runic';
+import { createStore } from '@/runic';
 
 type State = {
   count: number;

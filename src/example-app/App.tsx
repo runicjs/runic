@@ -1,8 +1,8 @@
 import './index.css';
 
-import { useStore } from '../runic-react';
+import { countStore, decrement, increment } from '@/example-app/stores/count';
+import { useStore } from '@/runic-react';
 import './App.css';
-import { countStore, decrement, increment } from './stores/count';
 
 function App() {
   const count = useStore(countStore, (state) => state.count);
@@ -13,7 +13,7 @@ function App() {
 
       <div className="card">
         <button onClick={decrement}>-</button>
-        <span>{count}</span>
+        <span className="count">{count}</span>
         <button onClick={increment}>+</button>
       </div>
     </>

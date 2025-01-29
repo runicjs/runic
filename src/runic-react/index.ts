@@ -1,5 +1,5 @@
+import { EqualityFn, Store } from '@/runic';
 import { useEffect, useState } from 'react';
-import { EqualityFn, Store } from '../runic';
 
 export const useStore = <State, Value>(
   store: Store<State>,
