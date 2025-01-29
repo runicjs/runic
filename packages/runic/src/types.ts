@@ -1,5 +1,8 @@
 import { Draft } from 'immer';
 
+export type ListenerFn<State> = (state: State) => void;
+export type UnsubscribeFn = () => void;
+
 export type Store<State> = {
   // Getters
   getState: () => State;
@@ -12,7 +15,7 @@ export type Store<State> = {
   reset: () => void;
 
   // Subscriptions
-  subscribe: (fn: (state: State) => unknown) => void;
+  subscribe: (fn: ListenerFn<State>) => UnsubscribeFn;
 };
 
 export type EqualityFn<T> = (a: T, b: T) => boolean;

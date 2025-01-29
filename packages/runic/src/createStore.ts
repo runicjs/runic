@@ -1,5 +1,5 @@
 import { Draft, produce } from 'immer';
-import { Store } from './types';
+import { ListenerFn, Store, UnsubscribeFn } from './types';
 
 export default function createStore<State>(initialState: State): Store<State> {
   let state = initialState;
@@ -29,7 +29,7 @@ export default function createStore<State>(initialState: State): Store<State> {
     notify();
   };
 
-  const subscribe = (fn: (state: State) => unknown): (() => void) => {
+  const subscribe = (fn: ListenerFn<State>): UnsubscribeFn => {
     // This gives a unique identity to the given function. If the same
     // function is subscribed multiple times, this makes sure that we
     // don't unsubscribe all of them at once.
