@@ -1,9 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './example-app/App.tsx';
+import Counter from './Counter.tsx';
+import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <Counter />
   </StrictMode>,
 );

@@ -2,7 +2,7 @@ import { counterStore, decrement, increment } from '@/example-app/stores';
 import { useStore } from '@/runic-react';
 import './index.css';
 
-function App() {
+export default function Counter() {
   const count = useStore(counterStore, (counter) => counter.count);
   const doubled = useStore(counterStore, (counter) => counter.count * 2);
 
@@ -21,5 +21,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
