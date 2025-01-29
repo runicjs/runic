@@ -13,12 +13,12 @@ type Drafts<T extends unknown[]> = { [K in keyof T]: Draft<T[K]> };
  * const numsStore = createStore<NumsState>({ nums: [2, 3, 4] });
  * const numStore3 = createStore<NumState>({ num: 5 });
  *
- * update([numStore1, numsStore, numStore3], ([num1, nums, num3]) => {
+ * updateStores([numStore1, numsStore, numStore3], ([num1, nums, num3]) => {
  *   //          Draft<NumState>, Draft<NumsState>, Draft<NumState>
  *   console.log(num1,            nums,             num3);
  * });
  */
-export default function update<T extends unknown[]>(stores: Stores<T>, fn: (drafts: Drafts<T>) => void) {
+export default function updateStores<T extends unknown[]>(stores: Stores<T>, fn: (drafts: Drafts<T>) => void) {
   const drafts: Drafts<T> = [] as Drafts<T>;
   const queue = stores.slice();
 

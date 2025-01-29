@@ -1,7 +1,8 @@
 {
-  "name": "example-app",
   "private": true,
-  "version": "0.0.0",
+  "name": "runic",
+  "description": "A lightweight and type-safe vanilla JS state management library",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",

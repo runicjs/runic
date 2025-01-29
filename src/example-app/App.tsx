@@ -1,17 +1,21 @@
-import { countStore, decrement, increment } from '@/example-app/stores/count';
+import { counterStore, decrement, increment } from '@/example-app/stores';
 import { useStore } from '@/runic-react';
 import './index.css';
 
 function App() {
-  const count = useStore(countStore, (state) => state.count);
+  const count = useStore(counterStore, (counter) => counter.count);
+  const doubled = useStore(counterStore, (counter) => counter.count * 2);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center gap-4">
       <h1 className="text-4xl font-bold">runic</h1>
 
-      <div className="p-8 flex flex-row gap-4 items-center">
+      <div className="text-2xl">
+        {count} * 2 = {doubled}
+      </div>
+
+      <div className="flex flex-row gap-4 items-center">
         <button onClick={decrement}>-</button>
-        <span className="text-6xl">{count}</span>
         <button onClick={increment}>+</button>
       </div>
     </div>
