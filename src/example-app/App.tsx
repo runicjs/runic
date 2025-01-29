@@ -1,31 +1,11 @@
 import './index.css';
 
-import { createStore } from '../runic';
 import { useStore } from '../runic-react';
 import './App.css';
-
-type State = {
-  count: number;
-};
-
-const store = createStore<State>({
-  count: 0,
-});
-
-const increment = () => {
-  store.setState((draft) => {
-    draft.count++;
-  });
-};
-
-const decrement = () => {
-  store.setState((draft) => {
-    draft.count--;
-  });
-};
+import { countStore, decrement, increment } from './stores/count';
 
 function App() {
-  const count = useStore(store, (state) => state.count);
+  const count = useStore(countStore, (state) => state.count);
 
   return (
     <>
