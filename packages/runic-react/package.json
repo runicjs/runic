@@ -33,7 +33,8 @@
   "scripts": {
     "build": "rm -rf dist && tsc",
     "prepublishOnly": "pnpm build",
-    "test": "vitest"
+    "test": "vitest --run",
+    "test:watch": "vitest"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",

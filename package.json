@@ -2,10 +2,14 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "runic:build": "pnpm --filter @runicjs/runic build",
-    "runic:test": "pnpm --filter @runicjs/runic test",
-    "runic-react:build": "pnpm --filter @runicjs/runic-react build",
-    "runic-react:test": "pnpm --filter @runicjs/runic-react test",
+    "build": "pnpm runic:build && pnpm runic-react:build",
+    "test": "pnpm --filter \"*\" test",
+    "runic:build": "pnpm --filter runic build",
+    "runic:test": "pnpm --filter runic test",
+    "runic:test:watch": "pnpm --filter runic test:watch",
+    "runic-react:build": "pnpm --filter runic-react build",
+    "runic-react:test": "pnpm --filter runic-react test",
+    "runic-react:test:watch": "pnpm --filter runic-react test:watch",
     "example:basic-counter:dev": "pnpm --filter basic-counter dev",
     "ci:publish": "pnpm publish -r"
   }
