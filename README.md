@@ -23,7 +23,7 @@ $ pnpm i
 **Run example: Basic Counter**
 
 ```bash
-$ pnpm example:basic-counter
+$ pnpm example:basic-counter:dev
 # open http://localhost:5173/
 ```
 
