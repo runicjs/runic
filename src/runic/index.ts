@@ -1,49 +1,11 @@
-import { Draft, produce } from 'immer';
+/**
+ * Runic is a vanilla JS state management library.
+ *
+ * It's primary goal is to be simple, lightweight, and fast,
+ * and have a minimal API surface area that is easy to understand
+ * and ergonomic to use.
+ */
 
-export type Store<State> = {
-  getState: () => State;
-  getInitialState: () => State;
-  setState: (fn: (draft: Draft<State>) => void) => void;
-  reset: () => void;
-  subscribe: (fn: (state: State) => unknown) => void;
-  equalityFn?: EqualityFn<unknown>;
-};
-
-export type EqualityFn<T> = (a: T, b: T) => boolean;
-
-export const createStore = <T>(initialState: T): Store<T> => {
-  let state = initialState;
-  const listeners = new Set<(state: T) => void>();
-
-  const getState = () => state;
-  const getInitialState = () => initialState;
-
-  const setState = (fn: (draft: Draft<T>) => void) => {
-    state = produce(state, fn);
-    notify();
-  };
-
-  const reset = () => {
-    state = initialState;
-    notify();
-  };
-
-  const subscribe = (fn: (state: T) => unknown): (() => void) => {
-    listeners.add(fn);
-    return () => listeners.delete(fn);
-  };
-
-  const notify = () => {
-    for (const listener of listeners) {
-      listener(state);
-    }
-  };
-
-  return {
-    getState,
-    getInitialState,
-    setState,
-    reset,
-    subscribe,
-  };
-};
+export { default as createRunic } from './createRunic';
+export { default as createStore } from './createStore';
+export type { EqualityFn, Store } from './types';
