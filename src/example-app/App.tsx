@@ -1,8 +1,6 @@
-import './index.css';
-
 import { countStore, decrement, increment } from '@/example-app/stores/count';
 import { useStore } from '@/runic-react';
-import './App.css';
+import './index.css';
 
 function App() {
   const count = useStore(countStore, (state) => state.count);
