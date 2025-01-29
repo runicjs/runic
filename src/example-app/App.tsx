@@ -1,17 +1,32 @@
 import './index.css';
 
-import { useState } from 'react';
+import { createStore } from '../runic';
+import { useStore } from '../runic-react';
 import './App.css';
 
+type State = {
+  count: number;
+};
+
+const store = createStore<State>({
+  count: 0,
+});
+
 function App() {
-  const [count, setCount] = useState(0);
+  const count = useStore(store, (state) => state.count);
+
+  const increment = () => {
+    store.setState((draft) => {
+      draft.count++;
+    });
+  };
 
   return (
     <>
       <h1>runic</h1>
 
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
+        <button onClick={increment}>count is {count}</button>
       </div>
     </>
   );
