@@ -1,8 +1,10 @@
 {
   "private": true,
+  "license": "MIT",
   "scripts": {
     "runic:build": "pnpm --filter @runicjs/runic build",
     "runic-react:build": "pnpm --filter @runicjs/runic-react build",
-    "example:basic-counter": "pnpm --filter basic-counter dev"
+    "example:basic-counter": "pnpm --filter basic-counter dev",
+    "ci:publish": "pnpm publish -r"
   }
 }

@@ -32,8 +32,7 @@
   ],
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "prepublishOnly": "pnpm build",
-    "publish": "npm publish --access public"
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@types/react": "catalog:",
