@@ -12,14 +12,14 @@ const store = createStore<State>({
   count: 0,
 });
 
+const increment = () => {
+  store.setState((draft) => {
+    draft.count++;
+  });
+};
+
 function App() {
   const count = useStore(store, (state) => state.count);
-
-  const increment = () => {
-    store.setState((draft) => {
-      draft.count++;
-    });
-  };
 
   return (
     <>
