@@ -22,6 +22,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
+    "jsx": "react-jsx",
     "types": ["vitest/globals"]
   },
   "include": ["src"]
