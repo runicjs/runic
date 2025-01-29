@@ -1,5 +1,5 @@
-import { counterStore, decrement, increment } from '@/example-app/stores';
-import { useStore } from '@/runic-react';
+import { useStore } from '@runicjs/runic-react';
+import { counterStore, decrement, increment } from './counterStore';
 import './index.css';
 
 export default function Counter() {

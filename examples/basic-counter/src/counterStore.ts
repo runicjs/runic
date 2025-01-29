@@ -1,4 +1,4 @@
-import { createStore } from '@/runic';
+import { createStore } from '@runicjs/runic';
 
 export type Counter = {
   count: number;
