@@ -18,6 +18,12 @@ const increment = () => {
   });
 };
 
+const decrement = () => {
+  store.setState((draft) => {
+    draft.count--;
+  });
+};
+
 function App() {
   const count = useStore(store, (state) => state.count);
 
@@ -26,7 +32,9 @@ function App() {
       <h1>runic</h1>
 
       <div className="card">
-        <button onClick={increment}>count is {count}</button>
+        <button onClick={decrement}>-</button>
+        <span>{count}</span>
+        <button onClick={increment}>+</button>
       </div>
     </>
   );
