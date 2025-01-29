@@ -8,6 +8,7 @@ Runic React provides tools for working with Runic in React.
 ## Roadmap
 
 - [x] Implement `useStore`
+- [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic-react)
 - [ ] Write tests
 - [ ] Implement TodoMVC using runic-react
 - [ ] Verify that there are no unnecessary rerenders

@@ -21,7 +21,7 @@ easy to understand and ergonomic to use.
 
 - [x] Implement `createStore`
 - [x] Implement `updateStores`
-- [ ] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
+- [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
 - [ ] Write tests
 - [ ] Finalize the v0 API
 - [ ] Implement remaining functionality
