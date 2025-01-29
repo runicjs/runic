@@ -4,48 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-catalogs:
-  default:
-    '@eslint/js':
-      specifier: ^9.17.0
-      version: 9.19.0
-    '@types/react':
-      specifier: ^18.3.18
-      version: 18.3.18
-    '@types/react-dom':
-      specifier: ^18.3.5
-      version: 18.3.5
-    '@vitejs/plugin-react':
-      specifier: ^4.3.4
-      version: 4.3.4
-    eslint:
-      specifier: ^9.17.0
-      version: 9.19.0
-    eslint-plugin-react-hooks:
-      specifier: ^5.0.0
-      version: 5.1.0
-    eslint-plugin-react-refresh:
-      specifier: ^0.4.16
-      version: 0.4.18
-    globals:
-      specifier: ^15.14.0
-      version: 15.14.0
-    react:
-      specifier: ^18.3.1
-      version: 18.3.1
-    react-dom:
-      specifier: ^18.3.1
-      version: 18.3.1
-    typescript:
-      specifier: ~5.6.2
-      version: 5.6.3
-    typescript-eslint:
-      specifier: ^8.18.2
-      version: 8.22.0
-    vite:
-      specifier: ^6.0.5
-      version: 6.0.11
-
 importers:
 
   .: {}
@@ -62,99 +20,99 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0(vite@6.0.11(jiti@2.4.2)(lightningcss@1.29.1))
       react:
-        specifier: 'catalog:'
+        specifier: ^18.3.1
         version: 18.3.1
       react-dom:
-        specifier: 'catalog:'
+        specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
       tailwindcss:
         specifier: ^4.0.0
         version: 4.0.0
     devDependencies:
       '@eslint/js':
-        specifier: 'catalog:'
+        specifier: ^9.17.0
         version: 9.19.0
       '@types/react':
-        specifier: 'catalog:'
+        specifier: ^18.3.18
         version: 18.3.18
       '@types/react-dom':
-        specifier: 'catalog:'
+        specifier: ^18.3.5
         version: 18.3.5(@types/react@18.3.18)
       '@vitejs/plugin-react':
-        specifier: 'catalog:'
+        specifier: ^4.3.4
         version: 4.3.4(vite@6.0.11(jiti@2.4.2)(lightningcss@1.29.1))
       eslint:
-        specifier: 'catalog:'
+        specifier: ^9.17.0
         version: 9.19.0(jiti@2.4.2)
       eslint-plugin-react-hooks:
-        specifier: 'catalog:'
+        specifier: ^5.0.0
         version: 5.1.0(eslint@9.19.0(jiti@2.4.2))
       eslint-plugin-react-refresh:
-        specifier: 'catalog:'
+        specifier: ^0.4.16
         version: 0.4.18(eslint@9.19.0(jiti@2.4.2))
       globals:
-        specifier: 'catalog:'
+        specifier: ^15.14.0
         version: 15.14.0
       typescript:
-        specifier: 'catalog:'
+        specifier: ~5.6.2
         version: 5.6.3
       typescript-eslint:
-        specifier: 'catalog:'
+        specifier: ^8.18.2
         version: 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.6.3)
       vite:
-        specifier: 'catalog:'
+        specifier: ^6.0.5
         version: 6.0.11(jiti@2.4.2)(lightningcss@1.29.1)
 
   examples/todo-mvc-react:
     dependencies:
       react:
-        specifier: 'catalog:'
+        specifier: ^18.3.1
         version: 18.3.1
       react-dom:
-        specifier: 'catalog:'
+        specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@eslint/js':
-        specifier: 'catalog:'
+        specifier: ^9.17.0
         version: 9.19.0
       '@types/react':
-        specifier: 'catalog:'
+        specifier: ^18.3.18
         version: 18.3.18
       '@types/react-dom':
-        specifier: 'catalog:'
+        specifier: ^18.3.5
         version: 18.3.5(@types/react@18.3.18)
       '@vitejs/plugin-react':
-        specifier: 'catalog:'
+        specifier: ^4.3.4
         version: 4.3.4(vite@6.0.11(jiti@2.4.2)(lightningcss@1.29.1))
       eslint:
-        specifier: 'catalog:'
+        specifier: ^9.17.0
         version: 9.19.0(jiti@2.4.2)
       eslint-plugin-react-hooks:
-        specifier: 'catalog:'
+        specifier: ^5.0.0
         version: 5.1.0(eslint@9.19.0(jiti@2.4.2))
       eslint-plugin-react-refresh:
-        specifier: 'catalog:'
+        specifier: ^0.4.16
         version: 0.4.18(eslint@9.19.0(jiti@2.4.2))
       globals:
-        specifier: 'catalog:'
+        specifier: ^15.14.0
         version: 15.14.0
       typescript:
-        specifier: 'catalog:'
+        specifier: ~5.6.2
         version: 5.6.3
       typescript-eslint:
-        specifier: 'catalog:'
+        specifier: ^8.18.2
         version: 8.22.0(eslint@9.19.0(jiti@2.4.2))(typescript@5.6.3)
       vite:
-        specifier: 'catalog:'
+        specifier: ^6.0.5
         version: 6.0.11(jiti@2.4.2)(lightningcss@1.29.1)
 
   examples/todo-mvc-vanilla:
     devDependencies:
       typescript:
-        specifier: 'catalog:'
+        specifier: ~5.6.2
         version: 5.6.3
       vite:
-        specifier: 'catalog:'
+        specifier: ^6.0.5
         version: 6.0.11(jiti@2.4.2)(lightningcss@1.29.1)
 
   packages/runic:
@@ -164,10 +122,10 @@ importers:
         version: 10.1.1
     devDependencies:
       typescript:
-        specifier: 'catalog:'
+        specifier: ~5.6.2
         version: 5.6.3
       vite:
-        specifier: 'catalog:'
+        specifier: ^6.0.5
         version: 6.0.11(jiti@2.4.2)(lightningcss@1.29.1)
 
   packages/runic-react:
@@ -176,18 +134,15 @@ importers:
         specifier: workspace:*
         version: link:../runic
       react:
-        specifier: 'catalog:'
+        specifier: ^18.3.1
         version: 18.3.1
     devDependencies:
       '@types/react':
-        specifier: 'catalog:'
+        specifier: ^18.3.18
         version: 18.3.18
       typescript:
-        specifier: 'catalog:'
+        specifier: ~5.6.2
         version: 5.6.3
-      vite:
-        specifier: 'catalog:'
-        version: 6.0.11(jiti@2.4.2)(lightningcss@1.29.1)
 
 packages:
 
