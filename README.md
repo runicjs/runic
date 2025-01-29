@@ -24,16 +24,19 @@ easy to understand and ergonomic to use.
 
 - [x] Implement `createStore`
 - [ ] Write tests
-- [ ] Implement `createRunic`
+- [ ] Finalize the v0 API
+- [ ] Implement remaining functionality
+- [ ] Implement `createRunic` (wraps all functionality)
+- [ ] Implement TodoMVC in vanilla JS using runic
 
 **runic-react**
 
 - [x] Implement `useStore`
 - [ ] Write tests
-- [ ] Implement TodoMVC using runic
+- [ ] Implement TodoMVC using runic-react
 - [ ] Verify that there are no unnecessary rerenders
 - [ ] Implement a larger app with more complex state using runic
-- [ ] IDEA: `useComposite`
+- [ ] IDEA: `useComposite` (might need a clearer name)
 
 ## Usage
 
