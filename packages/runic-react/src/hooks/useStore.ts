@@ -1,4 +1,4 @@
-import { EqualityFn, Store } from '@/runic';
+import type { EqualityFn, Store } from '@runicjs/runic';
 import { useEffect, useState } from 'react';
 
 export default function useStore<State, Value>(
@@ -13,7 +13,6 @@ export default function useStore<State, Value>(
       setValue((last) => {
         const next = fn(state);
         if (equalityFn && !equalityFn(last, next)) return last;
-        if (store.equalityFn && !store.equalityFn(last, next)) return last;
         return next;
       });
     });

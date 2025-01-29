@@ -160,6 +160,9 @@ importers:
 
   packages/runic-react:
     dependencies:
+      '@runicjs/runic':
+        specifier: workspace:*
+        version: link:../runic
       react:
         specifier: 'catalog:'
         version: 18.3.1
