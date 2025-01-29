@@ -19,28 +19,14 @@ easy to understand and ergonomic to use.
 
 ## Roadmap
 
-**repo**
-
-- [ ] Turn this into a monorepo with separate packages.
-
-**runic**
-
 - [x] Implement `createStore`
 - [x] Implement `updateStores`
+- [ ] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
 - [ ] Write tests
 - [ ] Finalize the v0 API
 - [ ] Implement remaining functionality
 - [ ] Implement `createRunic` (wraps all functionality)
 - [ ] Implement TodoMVC in vanilla JS using runic
-
-**runic-react**
-
-- [x] Implement `useStore`
-- [ ] Write tests
-- [ ] Implement TodoMVC using runic-react
-- [ ] Verify that there are no unnecessary rerenders
-- [ ] Implement a larger app with more complex state using runic
-- [ ] IDEA: `useComposite` (might need a clearer name)
 
 ## Usage
 

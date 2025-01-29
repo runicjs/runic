@@ -7,6 +7,11 @@ easy to understand and ergonomic to use.
 > **Warning**
 > Runic is in its infancy. It's not safe to use in production at this time.
 
+## Roadmap
+
+- [x] Turn this into a monorepo with separate packages.
+- [ ] Create a documentation site (https://docusaurus.io/)
+
 ## Development
 
 ```bash

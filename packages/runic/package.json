@@ -1,12 +1,39 @@
 {
   "name": "@runicjs/runic",
   "description": "A lightweight and type-safe vanilla JS state management library",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
-  "main": "src/index.ts",
+  "license": "MIT",
+  "repository": "github:runicjs/runic",
+  "bugs": "https://github.com/runicjs/runic/issues",
+  "keywords": [
+    "runic",
+    "state",
+    "simple",
+    "immutable",
+    "typescript",
+    "vanilla"
+  ],
+  "authors": [
+    "Will Bowers <william.bowers@gmail.com> (https://github.com/willurd)"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "publish": "npm publish --access public"
   },
   "devDependencies": {
     "typescript": "catalog:",

@@ -3,10 +3,37 @@
   "description": "Tools for working with Runic in React",
   "version": "0.1.0",
   "type": "module",
-  "main": "src/index.ts",
+  "license": "MIT",
+  "repository": "github:runicjs/runic",
+  "bugs": "https://github.com/runicjs/runic/issues",
+  "keywords": [
+    "runic",
+    "state",
+    "simple",
+    "immutable",
+    "typescript",
+    "react"
+  ],
+  "authors": [
+    "Will Bowers <william.bowers@gmail.com> (https://github.com/willurd)"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "rm -rf dist && tsc",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "publish": "npm publish --access public"
   },
   "devDependencies": {
     "@types/react": "catalog:",
