@@ -6,6 +6,5 @@
  * and ergonomic to use.
  */
 
-export { default as createRunic } from './createRunic';
 export { default as createStore } from './createStore';
 export type { EqualityFn, Store } from './types';
