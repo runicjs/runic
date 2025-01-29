@@ -17,3 +17,4 @@ catalog:
   vite: ^6.0.5
   tailwindcss: ^4.0.0
   '@tailwindcss/vite': ^4.0.0
+  immer: ^10.1.1
