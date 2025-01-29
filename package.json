@@ -1,7 +1,3 @@
 {
-  "private": true,
-  "packages": [
-    "packages/*",
-    "examples/*"
-  ]
+  "private": true
 }
