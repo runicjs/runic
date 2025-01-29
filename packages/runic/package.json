@@ -5,7 +5,8 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "typescript": "catalog:",
