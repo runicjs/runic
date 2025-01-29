@@ -3,20 +3,20 @@ import { useEffect, useState } from 'react';
 
 export default function useStore<State, Value>(
   store: Store<State>,
-  fn: (state: State) => Value,
+  selector: (state: State) => Value,
   equalityFn?: EqualityFn<Value>,
 ): Value {
-  const [value, setValue] = useState<Value>(fn(store.getState()));
+  const [value, setValue] = useState<Value>(selector(store.getState()));
 
   useEffect(() => {
     return store.subscribe((state) => {
       setValue((last) => {
-        const next = fn(state);
+        const next = selector(state);
         if (equalityFn && !equalityFn(last, next)) return last;
         return next;
       });
     });
-  }, [store, fn, equalityFn]);
+  }, [store, selector, equalityFn]);
 
   return value;
 }

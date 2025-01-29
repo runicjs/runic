@@ -22,7 +22,8 @@ easy to understand and ergonomic to use.
 - [x] Implement `createStore`
 - [x] Implement `updateStores`
 - [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
-- [ ] Write tests
+- [x] Write tests
+- [ ] Consider making `setPartialState` a deep merge
 - [ ] Finalize the v0 API
 - [ ] Implement remaining functionality
 - [ ] Implement `createRunic` (wraps all functionality)
