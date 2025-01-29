@@ -22,8 +22,10 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
+      "development": "./src/index.ts",
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "files": [
@@ -31,12 +33,14 @@
     "src"
   ],
   "scripts": {
-    "build": "rm -rf dist && tsc",
+    "clean": "rimraf dist",
+    "build": "pnpm clean && tsc",
     "prepublishOnly": "pnpm build",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
   "devDependencies": {
+    "rimraf": "^6.0.1",
     "typescript": "~5.6.2",
     "vite": "^6.0.5",
     "vitest": "^3.0.4"

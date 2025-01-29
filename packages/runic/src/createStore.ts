@@ -3,17 +3,25 @@ import { Store } from './types';
 
 export default function createStore<State>(initialState: State): Store<State> {
   let state = initialState;
+  // TODO: Is this performant enough?
   const listeners = new Set<(state: State) => void>();
 
+  // Return the current state.
   const getState = () => state;
+
+  // Return the initial state.
   const getInitialState = () => initialState;
 
+  // Merges the given state with the current state.
   // TODO: Consider making this a deep merge. Needs a recursive partial type.
   const setPartialState = (partialState: Partial<State>) => setState({ ...state, ...partialState });
 
+  // Lets you update the state using an immutable data structure.
   // TODO: It would be nice if this function could be configured so you could
   // use a different library than immer, or a different update strategy altogether.
   const update = (fn: (draft: Draft<State>) => void) => setState(produce(state, fn));
+
+  // Change the state back to the initial state.
   const reset = () => setState(initialState);
 
   const setState = (nextState: State) => {

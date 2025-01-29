@@ -23,7 +23,8 @@
     "noFallthroughCasesInSwitch": true,
 
     "jsx": "react-jsx",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "customConditions": ["development"]
   },
   "include": ["src"]
 }
