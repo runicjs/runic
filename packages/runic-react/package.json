@@ -1,0 +1,21 @@
+{
+  "name": "@runicjs/runic-react",
+  "description": "Tools for working with Runic in React",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  },
+  "dependencies": {
+    "react": "catalog:",
+    "@runicjs/runic": "workspace:*"
+  }
+}
