@@ -32,6 +32,12 @@
       "types": "./dist/integrations/immer.d.ts",
       "import": "./dist/integrations/immer.js",
       "default": "./dist/integrations/immer.js"
+    },
+    "./integrations/mutative": {
+      "development": "./src/integrations/mutative.ts",
+      "types": "./dist/integrations/mutative.d.ts",
+      "import": "./dist/integrations/mutative.js",
+      "default": "./dist/integrations/mutative.js"
     }
   },
   "files": [
