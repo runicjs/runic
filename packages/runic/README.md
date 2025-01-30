@@ -12,7 +12,7 @@ easy to understand and ergonomic to use.
 - Simple API with a plain JavaScript approach to state updates
 - Updates powered by [Immer](https://immerjs.github.io/immer/) to avoid excessive boilerplate
 - Full TypeScript support with strong type inference
-- Core implementation is less than 25 sloc and has no dependencies
+- Core implementation is ~25 sloc and has no dependencies
 - Optional integrations with Immer, Mutative, and more
 - Efficient updates through granular change detection and selective re-rendering
 - Support for atomic multi-store updates to maintain data consistency
@@ -26,6 +26,8 @@ easy to understand and ergonomic to use.
 - [x] Implement `resetState`
 - [x] Implement Immer integrations (`updateState` & `updateStates`)
 - [x] Write tests
+- [ ] Test initialState passed to producer in updateState, updateStates
+- [ ] Test store.destroy()
 - [ ] Implement Mutative integrations (`updateState` & `updateStates`)
 - [ ] Think about middleware
 - [ ] Come up with a solution for persistence

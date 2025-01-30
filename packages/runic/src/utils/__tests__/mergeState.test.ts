@@ -1,21 +1,6 @@
 import createStore from '../../createStore';
 import mergeState from '../mergeState';
-
-type Vector3 = {
-  x: number;
-  y: number;
-  z: number;
-};
-
-type User = {
-  name: string;
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    zip: string;
-  };
-};
+import { User, Vector3 } from './types';
 
 describe('mergeState', () => {
   it('should merge the given partial state with the current state', () => {

@@ -6,6 +6,7 @@ export type Store<State> = {
   getInitialState: () => State;
   setState: (nextState: State) => void;
   subscribe: (fn: ListenerFn<State>) => UnsubscribeFn;
+  destroy: () => void;
 };
 
 export type Stores<T extends unknown[]> = { [K in keyof T]: Store<T[K]> };

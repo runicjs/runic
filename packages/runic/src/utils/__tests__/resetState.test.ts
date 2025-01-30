@@ -1,9 +1,6 @@
 import createStore from '../../createStore';
 import resetState from '../resetState';
-
-type SimpleState = {
-  x: number;
-};
+import { SimpleState } from './types';
 
 describe('reset', () => {
   it('should reset the state back to the initial state', () => {

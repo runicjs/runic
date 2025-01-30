@@ -1,16 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
-import { updateStatesWithProducer } from '../..';
 import createStore from '../../createStore';
-
-type SimpleState = {
-  x: number;
-};
-
-type Vector3 = {
-  x: number;
-  y: number;
-  z: number;
-};
+import updateStatesWithProducer from '../updateStatesWithProducer';
+import { SimpleState, Vector3 } from './types';
 
 describe('updateStatesWithProducer', () => {
   it('should call the callback with drafts created by the producer', () => {

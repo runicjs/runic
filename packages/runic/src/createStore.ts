@@ -6,7 +6,7 @@ export default function createStore<State>(initialState: State): Store<State> {
   // I did some minor benchmarking and arrays beat sets by a slim margin.
   //   Set x 177,651 ops/sec
   // Array x 190,497 ops/sec
-  const listeners: Array<ListenerFn<State>> = [];
+  let listeners: Array<ListenerFn<State>> = [];
 
   // Return the current state.
   const getState = () => state;
@@ -32,10 +32,16 @@ export default function createStore<State>(initialState: State): Store<State> {
     return () => listeners.splice(listeners.indexOf(listener), 1);
   };
 
+  // Clean up the store if it's no longer needed.
+  const destroy = () => {
+    listeners = [];
+  };
+
   return {
     getState,
     getInitialState,
     setState,
     subscribe,
+    destroy,
   };
 }
