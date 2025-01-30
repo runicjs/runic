@@ -12,7 +12,8 @@ easy to understand and ergonomic to use.
 - Simple API with a plain JavaScript approach to state updates
 - Updates powered by [Immer](https://immerjs.github.io/immer/) to avoid excessive boilerplate
 - Full TypeScript support with strong type inference
-- Minimal bundle size with zero dependencies beyond Immer
+- Core implementation is less than 25 sloc and has no dependencies
+- Optional integrations with Immer, Mutative, and more
 - Efficient updates through granular change detection and selective re-rendering
 - Support for atomic multi-store updates to maintain data consistency
 - No Providers, no actions, no reducers, minimal boilerplate
@@ -20,7 +21,7 @@ easy to understand and ergonomic to use.
 ## Roadmap
 
 - [x] Implement `createStore`
-- [x] Implement `updateStores`
+- [x] Implement `updateStates`
 - [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
 - [x] Write tests
 - [ ] Think about middleware
@@ -88,14 +89,14 @@ addTodo({ id: 1, text: 'Learn Runic', done: false });
 ### Multi-Store Updates
 
 ```ts
-import { updateStores } from 'runic';
+import { updateStates } from 'runic';
 
 // Create as many stores as you want.
 const userStore = createStore<User>({ credits: 100 });
 const inventoryStore = createStore<Inventory>(['potion']);
 
 // Update multiple stores at once.
-updateStores([userStore, inventoryStore], ([user, inventory]) => {
+updateStates([userStore, inventoryStore], ([user, inventory]) => {
   user.credits -= 50;
   inventory.push('sword');
 });

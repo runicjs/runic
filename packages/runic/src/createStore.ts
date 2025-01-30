@@ -1,4 +1,3 @@
-import { Draft, produce } from 'immer';
 import { ListenerFn, Store, UnsubscribeFn } from './types';
 
 export default function createStore<State>(initialState: State): Store<State> {
@@ -14,16 +13,6 @@ export default function createStore<State>(initialState: State): Store<State> {
 
   // Return the initial state.
   const getInitialState = () => initialState;
-
-  // Merges the given state with the current state.
-  // TODO: Consider making this a deep merge. Needs a recursive partial type.
-  const setPartialState = (partialState: Partial<State>) => setState({ ...state, ...partialState });
-
-  // Lets you update the state using an immutable data structure.
-  const update = (fn: (draft: Draft<State>) => void) => setState(produce(state, fn));
-
-  // Change the state back to the initial state.
-  const reset = () => setState(initialState);
 
   // Replace the entire state and notify listeners.
   const setState = (nextState: State) => {
@@ -47,9 +36,6 @@ export default function createStore<State>(initialState: State): Store<State> {
     getState,
     getInitialState,
     setState,
-    setPartialState,
-    update,
-    reset,
     subscribe,
   };
 }

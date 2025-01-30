@@ -1,4 +1,5 @@
-import { createStore } from '@runicjs/runic';
+import { createStore, mergeState } from '@runicjs/runic';
+import { updateState } from '@runicjs/runic/integrations/immer';
 import { act, render, renderHook } from '@testing-library/react';
 import useStore from '../useStore';
 
@@ -54,7 +55,7 @@ describe('useStore', () => {
     const TestComponent = createRerenderTestComponent(() => useStore(store, (state) => state.x), renderCountSpy);
     render(<TestComponent />);
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
-    act(() => store.setPartialState({ x: 1 }));
+    act(() => mergeState(store, { x: 1 }));
     expect(renderCountSpy).toHaveBeenCalledTimes(2);
   });
 
@@ -64,7 +65,7 @@ describe('useStore', () => {
     const TestComponent = createRerenderTestComponent(() => useStore(store, (state) => state.x), renderCountSpy);
     render(<TestComponent />);
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
-    act(() => store.setPartialState({ y: 1 }));
+    act(() => mergeState(store, { y: 1 }));
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -74,7 +75,7 @@ describe('useStore', () => {
     const TestComponent = createRerenderTestComponent(() => useStore(store, (state) => state.x), renderCountSpy);
     render(<TestComponent />);
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
-    act(() => store.setPartialState({ x: 0 }));
+    act(() => mergeState(store, { x: 0 }));
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -85,7 +86,7 @@ describe('useStore', () => {
     render(<TestComponent />);
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
     act(() => {
-      store.update((draft) => {
+      updateState(store, (draft) => {
         draft.x = 1;
       });
     });
@@ -99,7 +100,7 @@ describe('useStore', () => {
     render(<TestComponent />);
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
     act(() => {
-      store.update((draft) => {
+      updateState(store, (draft) => {
         draft.x = 0;
       });
     });
@@ -113,7 +114,7 @@ describe('useStore', () => {
     render(<TestComponent />);
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
     act(() => {
-      store.update((draft) => {
+      updateState(store, (draft) => {
         draft.y = 3;
       });
     });
