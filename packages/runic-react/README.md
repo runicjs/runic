@@ -68,7 +68,7 @@ function Counter() {
 ```ts
 import { createStore } from '@runicjs/runic';
 import { useStores } from '@runicjs/runic-react';
-import shallowEqual from 'shallow-equal';
+import deepEqual from 'fast-deep-equal';
 
 type User = {
   id: number;
@@ -99,7 +99,7 @@ const UserTodos = () => {
       return todoList.todos.filter((todo) => todo.userId === user.id);
     },
     // Gives you control over whether to rerender after the selector runs.
-    shallowEqual,
+    deepEqual,
   );
 };
 ```

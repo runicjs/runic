@@ -92,7 +92,6 @@ const App = () => {
 // @/app/components/ContactModal.tsx
 import { useStore } from '@runicjs/runic-react';
 import { StoreProvider, useNewStore, useProvidedStore } from '@runicjs/runic-react/context';
-import shallowEqual from 'shallow-equal';
 
 // const useNewStore = <State>(initialState: State): Store<State> => {
 //   const store = useMemo(() => createStore(initialState), []);
@@ -126,6 +125,6 @@ const ContactModal = () => {
 
 const ContactForm = () => {
   const store = useProvidedStore();
-  const info = useStore(store, (state) => state, shallowEqual);
+  const { name, email, message } = useStore(store);
 };
 ```

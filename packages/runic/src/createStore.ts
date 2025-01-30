@@ -58,6 +58,7 @@ export default function createStore<State>(initialState: State): Store<State> {
     // TODO: Maybe there's an even faster way to do listeners?
     const id = {};
     listeners.push({ id, fn });
+    fn(getState());
 
     return () => {
       const index = listeners.findIndex((l) => l.id === id);

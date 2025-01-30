@@ -9,6 +9,8 @@ export type Store<State> = {
   destroy: () => void;
 };
 
+export type Selector<State, Value> = (state: State) => Value;
+
 export type Stores<T extends unknown[]> = { [K in keyof T]: Store<T[K]> };
 
 export type EqualityFn<T> = (a: T, b: T) => boolean;

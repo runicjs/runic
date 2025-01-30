@@ -1,17 +1,20 @@
 import { useStore } from '@runicjs/runic-react';
 import { toggleAllTodos } from '../actions';
-import { appStore } from '../stores';
+import { AppState, appStore } from '../stores';
+import { Filter } from '../types';
 import Todo from './Todo';
+
+const createFilterSelector = (filter: Filter) => (state: AppState) => {
+  return state.todos.filter((todo) => {
+    if (filter === 'all') return true;
+    if (filter === 'active') return !todo.completed;
+    return todo.completed;
+  });
+};
 
 export default function Todos() {
   const filter = useStore(appStore, (state) => state.filter);
-  const filteredTodos = useStore(appStore, (state) => {
-    return state.todos.filter((todo) => {
-      if (filter === 'all') return true;
-      if (filter === 'active') return !todo.completed;
-      return todo.completed;
-    });
-  });
+  const filteredTodos = useStore(appStore, createFilterSelector(filter));
 
   if (filteredTodos.length === 0) {
     return null;
