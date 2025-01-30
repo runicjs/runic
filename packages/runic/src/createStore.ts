@@ -27,6 +27,9 @@ export default function createStore<State>(initialState: State): Store<State> {
     // This gives a unique identity to the given function. If the same
     // function is subscribed multiple times, this makes sure that we
     // don't unsubscribe all of them at once.
+    // TODO: Maybe this could be slightly faster with:
+    // listener = { id: Symbol(), callback: fn }
+    // so we don't incur the cost of a second function call on every change.
     const listener = (state: State) => fn(state);
     listeners.push(listener);
     return () => listeners.splice(listeners.indexOf(listener), 1);
