@@ -13,6 +13,8 @@ easy to understand and ergonomic to use.
 ## Roadmap
 
 - [x] Turn this into a monorepo with separate packages.
+- [ ] Get to a place where I'm happy with the API
+- [ ] Starting using a `develop` branch
 - [ ] Create a documentation site (https://docusaurus.io/)
 
 ## Development
