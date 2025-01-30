@@ -23,6 +23,10 @@ easy to understand and ergonomic to use.
 - [x] Implement `updateStores`
 - [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
 - [x] Write tests
+- [ ] Think about middleware
+- [ ] Come up with a solution for persistence
+- [ ] Come up with a solution for logging
+- [ ] Come up with a solution for error reporting
 - [ ] Consider making `setPartialState` a deep merge
 - [ ] Finalize the v0 API
 - [ ] Implement remaining functionality
