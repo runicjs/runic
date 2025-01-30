@@ -1,12 +1,12 @@
 import { useStore } from '@runicjs/runic-react';
 import { setFilter } from '../actions';
-import { appStore } from '../stores';
+import { appStore, selectFilter } from '../stores';
 import { Filter } from '../types';
 
 const FilterList: Array<Filter> = ['all', 'active', 'completed'];
 
 export default function Filters() {
-  const appFilter = useStore(appStore, (state) => state.filter);
+  const appFilter = useStore(appStore, selectFilter);
 
   const onFilterChange = (filter: Filter) => {
     return (event: React.MouseEvent<HTMLAnchorElement>) => {

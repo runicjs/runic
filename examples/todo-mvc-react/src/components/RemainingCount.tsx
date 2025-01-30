@@ -1,14 +1,14 @@
 import { useStore } from '@runicjs/runic-react';
-import { appStore } from '../stores';
+import { AppState, appStore, selectIncompleteTodos } from '../stores';
+
+const selectIncompleteCount = (state: AppState) => selectIncompleteTodos(state).length;
 
 export default function RemainingCount() {
-  const remaining = useStore(appStore, (state) => {
-    return state.todos.filter((todo) => !todo.completed).length;
-  });
+  const incompleteCount = useStore(appStore, selectIncompleteCount);
 
   return (
     <span className="todo-count">
-      <strong>{remaining}</strong> {remaining === 1 ? 'item' : 'items'} left
+      <strong>{incompleteCount}</strong> {incompleteCount === 1 ? 'item' : 'items'} left
     </span>
   );
 }

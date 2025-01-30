@@ -1,12 +1,13 @@
+import { useCallback } from 'react';
 import { addTodo } from '../actions';
 
 export default function Header() {
-  const onNewTodoKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onNewTodoKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       addTodo(event.currentTarget.value.trim());
       event.currentTarget.value = '';
     }
-  };
+  }, []);
 
   return (
     <header className="header">

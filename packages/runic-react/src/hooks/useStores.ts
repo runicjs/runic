@@ -30,7 +30,7 @@ export default function useStores<T extends unknown[], Value>(
     return () => {
       unsubscribes.forEach((unsubscribe) => unsubscribe());
     };
-  }, [stores, selector, equalityFn]);
+  }, [...stores, selector, equalityFn]);
 
   return value;
 }

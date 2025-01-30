@@ -1,4 +1,4 @@
-import merge from 'lodash/merge';
+import mergeDeep from 'lodash/merge';
 import { Store } from '../types';
 
 export type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T[P]> } : T | undefined;
@@ -12,7 +12,7 @@ export type DeepPartial<T> = T extends object ? { [P in keyof T]?: DeepPartial<T
 export default function mergeState<State>(
   store: Store<State>,
   partialState: DeepPartial<State>,
-  mergeFn: (a: State, b: DeepPartial<State>) => State = merge,
+  mergeFn: (a: State, b: DeepPartial<State>) => State = mergeDeep,
 ) {
   store.setState(mergeFn(store.getState(), partialState));
 }

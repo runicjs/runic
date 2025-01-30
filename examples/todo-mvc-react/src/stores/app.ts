@@ -26,6 +26,20 @@ appStore.subscribe((state) => {
   localStorage.setItem(StorageKey, JSON.stringify(state));
 });
 
+export const selectFilter = (state: AppState) => state.filter;
+export const selectTodos = (state: AppState) => state.todos;
+export const selectCompleteTodos = (state: AppState) => state.todos.filter((todo) => todo.completed);
+export const selectIncompleteTodos = (state: AppState) => state.todos.filter((todo) => !todo.completed);
+
+export const selectFilteredTodos = (state: AppState) => {
+  const filter = selectFilter(state);
+  return state.todos.filter((todo) => {
+    if (filter === 'all') return true;
+    if (filter === 'active') return !todo.completed;
+    return todo.completed;
+  });
+};
+
 // const SampleState: AppState = {
 //   nextId: 11,
 //   filter: 'all',

@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 import { removeTodo, setTodoCompletionStatus, setTodoText } from '../actions';
 import { Todo as TodoModel } from '../types';
 
@@ -10,31 +10,34 @@ const Todo = memo(({ todo }: { todo: TodoModel }) => {
     setEditText(todo.text);
   }, [todo.text]);
 
-  const onEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onEditChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setEditText(event.target.value);
-  };
+  }, []);
 
-  const onEditKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      setTodoText(todo.id, event.currentTarget.value?.trim() || '');
-      setIsEditing(false);
-    } else if (event.key === 'Escape') {
-      setEditText(todo.text);
-      setIsEditing(false);
-    }
-  };
+  const onEditKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        setTodoText(todo.id, event.currentTarget.value?.trim() || '');
+        setIsEditing(false);
+      } else if (event.key === 'Escape') {
+        setEditText(todo.text);
+        setIsEditing(false);
+      }
+    },
+    [todo.id, todo.text],
+  );
 
-  const onTodoEdit = () => {
+  const onTodoEdit = useCallback(() => {
     setIsEditing(true);
-  };
+  }, []);
 
-  const onTodoToggle = () => {
+  const onTodoToggle = useCallback(() => {
     setTodoCompletionStatus(todo.id, !todo.completed);
-  };
+  }, [todo.id, todo.completed]);
 
-  const onTodoDestroy = () => {
+  const onTodoDestroy = useCallback(() => {
     removeTodo(todo.id);
-  };
+  }, [todo.id]);
 
   return (
     <li className={isEditing ? 'editing' : todo.completed ? 'completed' : ''}>

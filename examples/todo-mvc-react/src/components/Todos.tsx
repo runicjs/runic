@@ -1,25 +1,19 @@
 import { useStore } from '@runicjs/runic-react';
+import { useCallback } from 'react';
 import { toggleAllTodos } from '../actions';
-import { AppState, appStore } from '../stores';
+import { appStore, selectFilteredTodos } from '../stores';
 import Todo from './Todo';
 
 export default function Todos() {
-  const filter = useStore(appStore, (state) => state.filter);
-  const filteredTodos = useStore(appStore, (state: AppState) => {
-    return state.todos.filter((todo) => {
-      if (filter === 'all') return true;
-      if (filter === 'active') return !todo.completed;
-      return todo.completed;
-    });
-  });
+  const filteredTodos = useStore(appStore, selectFilteredTodos);
+
+  const onToggleAll = useCallback(() => {
+    toggleAllTodos();
+  }, []);
 
   if (filteredTodos.length === 0) {
     return null;
   }
-
-  const onToggleAll = () => {
-    toggleAllTodos();
-  };
 
   return (
     <section className="main">
