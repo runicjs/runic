@@ -11,6 +11,8 @@ Runic React provides tools for working with Runic in React.
 - [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic-react)
 - [x] Write tests
 - [x] Implement `useStores`
+- [ ] Test selector that relies on a value from another selector that just changed
+- [ ] Test default selector (entire state)
 - [ ] Test creating stores dynamically (e.g. in a Context) and destroying them
 - [ ] Implement TodoMVC using runic-react
 - [ ] Verify that there are no unnecessary rerenders

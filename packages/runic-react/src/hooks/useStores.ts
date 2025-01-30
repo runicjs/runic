@@ -1,7 +1,7 @@
 import type { EqualityFn } from '@runicjs/runic';
 import { Stores } from '@runicjs/runic';
 import { useEffect, useState } from 'react';
-import { shallowEqual } from 'shallow-equal';
+import { defaultEqualityFn } from '../utils';
 
 export type States<T extends unknown[]> = { [K in keyof T]: T[K] };
 
@@ -12,7 +12,7 @@ const getStates = <T extends unknown[]>(stores: Stores<T>): States<T> => {
 export default function useStores<T extends unknown[], Value>(
   stores: Stores<T>,
   selector: (states: States<T>) => Value,
-  equalityFn: EqualityFn<Value> = shallowEqual as EqualityFn<Value>,
+  equalityFn: EqualityFn<Value> = defaultEqualityFn,
 ): Value {
   const [value, setValue] = useState<Value>(() => selector(getStates(stores)));
 
