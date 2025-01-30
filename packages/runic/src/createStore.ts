@@ -9,13 +9,13 @@ export default function createStore<State>(initialState: State): Store<State> {
   let listeners: Array<{ id: object; fn: ListenerFn<State> }> = [];
 
   // Return the current state.
-  const getState = () => state;
+  const getState: Store<State>['getState'] = () => state;
 
   // Return the initial state.
-  const getInitialState = () => initialState;
+  const getInitialState: Store<State>['getInitialState'] = () => initialState;
 
   // Replace the entire state and notify listeners.
-  const setState = (nextState: State) => {
+  const setState: Store<State>['setState'] = (nextState: State) => {
     state = nextState;
 
     // forEach is significantly faster than for-of at 10,000 listeners,
@@ -33,7 +33,7 @@ export default function createStore<State>(initialState: State): Store<State> {
   };
 
   // Subscribe for updates to the state.
-  const subscribe = (fn: ListenerFn<State>): UnsubscribeFn => {
+  const subscribe: Store<State>['subscribe'] = (fn: ListenerFn<State>): UnsubscribeFn => {
     // Object IDs beat Symbols and wrapper functions in speed until
     // you reach over 1,000 listeners, then it's about even. This
     // implementation should be fast enough for most use cases.
@@ -67,7 +67,7 @@ export default function createStore<State>(initialState: State): Store<State> {
   };
 
   // Clean up the store if it's no longer needed.
-  const destroy = () => {
+  const destroy: Store<State>['destroy'] = () => {
     listeners = [];
   };
 
