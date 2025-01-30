@@ -29,6 +29,63 @@ const App = () => {
 };
 ```
 
+## Modifying the store API with a custom store type
+
+```typescript
+// @/stores/index.ts
+
+import { createStore as createBaseStore, mergeState, resetState, DeepPartial } from '@runicjs/runic';
+import { updateState } from '@runicjs/runic/integrations/mutative'; // or immer, choose one
+import { Draft } from 'mutative';
+
+export type Recipe<State> = (draft: Draft<State>) => void;
+
+export type CustomStore<State> = {
+  reset: () => void;
+  merge: (partialState: DeepPartial<State>) => void;
+  update: (recipe: Recipe<State>) => void;
+};
+
+export const createStore = <State>(initialState: State): CustomStore<State> => {
+  const baseStore = createBaseStore(initialState);
+  const reset = () => resetState(baseStore);
+  const merge = (partialState: DeepPartial<State>) => mergeState(baseStore, partialState);
+  const update = (recipe: Recipe<State>) => updateState(baseStore, recipe);
+
+  return {
+    ...baseStore,
+    reset,
+    merge,
+    update,
+  };
+};
+
+// @/app/components/App.tsx
+
+import { createStore } from '@/stores';
+
+type User = {
+  id: string;
+  name: string;
+}
+
+const userStore = createStore<User>({
+  id: '',
+  name: '',
+});
+
+const setUserName = (userName: string) => {
+  userStore.update(user => {
+    user.name = userName;
+  });
+}
+
+const App = () => {
+  const userName = useStore(userStore, user => user.name);
+  return <input value={userName} onChange={(e) => setUserName(e.target.value)} />;
+};
+```
+
 ## Creating stores dynamically
 
 ```typescript

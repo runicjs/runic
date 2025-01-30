@@ -33,9 +33,9 @@ export const updateState = <State>(
  *   });
  *
  *   // is equivalent to this:
- *   updateStates(numStore1, (num1) => {
- *     updateStates(numsStore, (nums) => {
- *       updateStates(numStore3, (num3) => {
+ *   updateState(numStore1, (num1) => {
+ *     updateState(numsStore, (nums) => {
+ *       updateState(numStore3, (num3) => {
  *         console.log(num1, nums, num3);
  *       });
  *     });

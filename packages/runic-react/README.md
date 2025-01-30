@@ -20,9 +20,6 @@ Runic React provides tools for working with Runic in React.
 
 ### `useStore`
 
-> **Todo**
-> Move this to the runic-react package
-
 ```tsx
 import { createStore } from '@runicjs/runic';
 import { useStore } from '@runicjs/runic-react';

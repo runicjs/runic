@@ -26,6 +26,7 @@ easy to understand and ergonomic to use.
 - [x] Implement `resetState`
 - [x] Implement Immer integrations (`updateState` & `updateStates`)
 - [x] Write tests
+- [ ] Should I renamed "merge" to "patch"?
 - [ ] Test initialState passed to producer in updateState, updateStates
 - [ ] Test store.destroy()
 - [ ] Implement Mutative integrations (`updateState` & `updateStates`)
