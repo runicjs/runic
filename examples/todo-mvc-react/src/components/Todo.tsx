@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { removeTodo, setTodoCompletionStatus, setTodoText } from '../actions';
 import { Todo as TodoModel } from '../types';
 
-export default function Todo({ todo }: { todo: TodoModel }) {
+const Todo = memo(({ todo }: { todo: TodoModel }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
 
@@ -49,4 +49,6 @@ export default function Todo({ todo }: { todo: TodoModel }) {
       )}
     </li>
   );
-}
+});
+
+export default Todo;

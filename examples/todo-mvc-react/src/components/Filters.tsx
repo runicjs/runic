@@ -1,13 +1,14 @@
 import { useStore } from '@runicjs/runic-react';
+import { memo } from 'react';
 import { appStore } from '../stores';
 import ClearCompleted from './ClearCompleted';
 import FilterButtons from './FilterButtons';
 import RemainingCount from './RemainingCount';
 
-export default function Filters() {
-  const total = useStore(appStore, (state) => state.todos.length);
+const Filters = memo(() => {
+  const hasTodos = useStore(appStore, (state) => state.todos.length > 0);
 
-  if (total === 0) {
+  if (!hasTodos) {
     return null;
   }
 
@@ -18,4 +19,6 @@ export default function Filters() {
       <ClearCompleted />
     </footer>
   );
-}
+});
+
+export default Filters;

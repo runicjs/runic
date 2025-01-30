@@ -3,9 +3,9 @@ import { clearCompletedTodos } from '../actions';
 import { appStore } from '../stores';
 
 export default function Filters() {
-  const hasAnyCompletedTodos = useStore(appStore, (state) => state.todos.some((todo) => todo.completed));
+  const hasCompletedTodos = useStore(appStore, (state) => state.todos.some((todo) => todo.completed));
 
-  if (!hasAnyCompletedTodos) {
+  if (!hasCompletedTodos) {
     return null;
   }
 

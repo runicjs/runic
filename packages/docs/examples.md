@@ -118,7 +118,3 @@ const VectorAddition = () => {
   ); // <div>(4, 6)</div>
 };
 ```
-
-Please evaluate the API and let me know if you have any questions or suggestions.
-I'm specifically looking for feedback on whether I can simplify the API,
-whether it's too simple, and whether there is any missing functionality.
