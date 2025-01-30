@@ -1,8 +1,6 @@
-// import createStore from './createStore';
-import { Store } from '../types';
+import { Stores } from '../types';
 
-export type Stores<T extends unknown[]> = { [K in keyof T]: Store<T[K]> };
-export type UpdateManyCallback = (drafts: any[]) => void;
+export type UpdateManyCallback = (drafts: unknown[]) => void;
 
 /**
  * Takes a list of stores and a callback function that will be called with

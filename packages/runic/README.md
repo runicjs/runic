@@ -21,17 +21,18 @@ easy to understand and ergonomic to use.
 ## Roadmap
 
 - [x] Implement `createStore`
-- [x] Implement `updateStates`
 - [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
+- [x] Implement `mergeState`
+- [x] Implement `resetState`
+- [x] Implement Immer integrations (`updateState` & `updateStates`)
 - [x] Write tests
+- [ ] Implement Mutative integrations (`updateState` & `updateStates`)
 - [ ] Think about middleware
 - [ ] Come up with a solution for persistence
 - [ ] Come up with a solution for logging
 - [ ] Come up with a solution for error reporting
-- [ ] Consider making `setPartialState` a deep merge
 - [ ] Finalize the v0 API
 - [ ] Implement remaining functionality
-- [ ] Implement `createRunic` (wraps all functionality)
 - [ ] Implement TodoMVC in vanilla JS using runic
 
 ## Usage
@@ -39,7 +40,7 @@ easy to understand and ergonomic to use.
 ### Basic Store Creation and Updates
 
 ```js
-import { createStore } from 'runic';
+import { createStore } from '@runicjs/runic';
 
 // Create a store with initial state
 const counterStore = createStore({ count: 0 });
@@ -53,7 +54,7 @@ const unsubscribe = counterStore.subscribe((state) => {
 });
 
 // Update state (changes are made immutably via Immer)
-counterStore.update((state) => {
+updateState(counterStore, (state) => {
   state.count += 1;
 });
 
@@ -65,7 +66,7 @@ const storedState = JSON.parse(localStorage.getItem('counter-store'));
 counterStore.setState(storedState);
 
 // Reset the store to the initial state
-counterStore.reset();
+resetState(counterStore);
 ```
 
 ### TypeScript Support
@@ -78,7 +79,7 @@ const todosStore = createStore<Todos>([]);
 
 // Write simple functions to update your stores.
 function addTodo(newTodo: Todo) {
-  todosStore.update((todos) => {
+  updateState(todosStore, (todos) => {
     todos.push(newTodo);
   });
 }
@@ -89,7 +90,7 @@ addTodo({ id: 1, text: 'Learn Runic', done: false });
 ### Multi-Store Updates
 
 ```ts
-import { updateStates } from 'runic';
+import { updateStates } from '@runicjs/runic/integrations/immer';
 
 // Create as many stores as you want.
 const userStore = createStore<User>({ credits: 100 });
@@ -99,76 +100,5 @@ const inventoryStore = createStore<Inventory>(['potion']);
 updateStates([userStore, inventoryStore], ([user, inventory]) => {
   user.credits -= 50;
   inventory.push('sword');
-});
-```
-
-### React
-
-> **Todo**
-> Move this to the runic-react package
-
-```tsx
-import { createStore } from '@/runic';
-import { useStore } from '@/runic-react';
-
-type Counter = {
-  count: number;
-};
-
-export const counterStore = createStore<Counter>({
-  count: 0,
-});
-
-export const increment = () => {
-  counterStore.update((counter) => {
-    counter.count++;
-  });
-};
-
-export const decrement = () => {
-  counterStore.update((counter) => {
-    counter.count--;
-  });
-};
-
-function Counter() {
-  // Only re-renders when count changes
-  const count = useStore(counterStore, (counter) => counter.count);
-
-  // "Computed" value
-  const doubled = useStore(counterStore, (counter) => counter.count * 2);
-
-  return (
-    <div>
-      <div>
-        {count} * 2 = {doubled}
-      </div>
-      <button onClick={decrement}>-</button>
-      <button onClick={increment}>+</button>
-    </div>
-  );
-}
-```
-
-### Derived Values
-
-> **Warning**
-> Not implemented yet
-
-```ts
-import { derived } from 'runic';
-
-const todoStore = createStore({
-  items: [
-    { id: 1, text: 'First task', done: false },
-    { id: 2, text: 'Second task', done: true },
-  ],
-});
-
-// Create a derived value that updates when source changes
-const incompleteTodos = derived<IncompleteTodos>([todosStore], ([todos]) => todos.items.filter((item) => !item.done));
-
-incompleteTodos.subscribe((todos) => {
-  console.log('Incomplete tasks:', todos.length);
 });
 ```

@@ -12,7 +12,7 @@ export default function useStore<State, Value>(
     return store.subscribe((state) => {
       setValue((last) => {
         const next = selector(state);
-        if (equalityFn && !equalityFn(last, next)) return last;
+        if (equalityFn && equalityFn(last, next)) return last;
         return next;
       });
     });

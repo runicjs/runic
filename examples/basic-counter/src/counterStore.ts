@@ -1,4 +1,5 @@
 import { createStore } from '@runicjs/runic';
+import { updateState } from '@runicjs/runic/integrations/immer';
 
 export type Counter = {
   count: number;
@@ -9,13 +10,13 @@ export const counterStore = createStore<Counter>({
 });
 
 export const increment = () => {
-  counterStore.update((counter) => {
+  updateState(counterStore, (counter) => {
     counter.count++;
   });
 };
 
 export const decrement = () => {
-  counterStore.update((counter) => {
+  updateState(counterStore, (counter) => {
     counter.count--;
   });
 };

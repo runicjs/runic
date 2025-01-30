@@ -8,4 +8,6 @@ export type Store<State> = {
   subscribe: (fn: ListenerFn<State>) => UnsubscribeFn;
 };
 
+export type Stores<T extends unknown[]> = { [K in keyof T]: Store<T[K]> };
+
 export type EqualityFn<T> = (a: T, b: T) => boolean;

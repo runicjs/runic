@@ -1,0 +1,35 @@
+import type { EqualityFn } from '@runicjs/runic';
+import { Stores } from '@runicjs/runic';
+import { useEffect, useState } from 'react';
+
+export type States<T extends unknown[]> = { [K in keyof T]: T[K] };
+
+const getStates = <T extends unknown[]>(stores: Stores<T>): States<T> => {
+  return stores.map((store) => store.getState()) as States<T>;
+};
+
+export default function useStores<T extends unknown[], Value>(
+  stores: Stores<T>,
+  selector: (states: States<T>) => Value,
+  equalityFn?: EqualityFn<Value>,
+): Value {
+  const [value, setValue] = useState<Value>(() => selector(getStates(stores)));
+
+  useEffect(() => {
+    const unsubscribes = stores.map((store) =>
+      store.subscribe(() => {
+        setValue((last) => {
+          const next = selector(getStates(stores));
+          if (equalityFn && equalityFn(last, next)) return last;
+          return next;
+        });
+      }),
+    );
+
+    return () => {
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
+    };
+  }, [stores, selector, equalityFn]);
+
+  return value;
+}

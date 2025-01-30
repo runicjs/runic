@@ -1,24 +1,10 @@
 import { createStore, mergeState } from '@runicjs/runic';
 import { updateState } from '@runicjs/runic/integrations/immer';
 import { act, render, renderHook } from '@testing-library/react';
+import deepEqual from 'fast-deep-equal';
 import useStore from '../useStore';
-
-type SimpleState = {
-  x: number;
-};
-
-type Vector3 = {
-  x: number;
-  y: number;
-  z: number;
-};
-
-const createRerenderTestComponent = <State,>(hook: () => State, renderSpy: ReturnType<typeof vi.fn>) => {
-  return function TestComponent() {
-    renderSpy(hook());
-    return null;
-  };
-};
+import { SimpleState, Vector3 } from './types';
+import { createRerenderTestComponent } from './utils';
 
 describe('useStore', () => {
   it('should return the current state', () => {
@@ -38,18 +24,11 @@ describe('useStore', () => {
     const store = createStore<SimpleState>({ x: 0 });
     const { result, unmount } = renderHook(() => useStore(store, (state) => state.x));
     unmount();
-    store.setState({ x: 3 });
+    act(() => store.setState({ x: 3 }));
     expect(result.current).toEqual(0);
   });
 
-  it('should not update when the store state does not change', () => {
-    const store = createStore<SimpleState>({ x: 0 });
-    const { result } = renderHook(() => useStore(store, (state) => state.x));
-    store.setState({ x: 0 });
-    expect(result.current).toEqual(0);
-  });
-
-  it('should cause a rerender when the selected state changes', () => {
+  it('should rerender when the selected state changes', () => {
     const store = createStore<Vector3>({ x: 0, y: 1, z: 2 });
     const renderCountSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useStore(store, (state) => state.x), renderCountSpy);
@@ -59,7 +38,7 @@ describe('useStore', () => {
     expect(renderCountSpy).toHaveBeenCalledTimes(2);
   });
 
-  it('should not cause a rerender when non-selected state changes', () => {
+  it('should not rerender when non-selected state changes', () => {
     const store = createStore<Vector3>({ x: 0, y: 1, z: 2 });
     const renderCountSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useStore(store, (state) => state.x), renderCountSpy);
@@ -69,7 +48,28 @@ describe('useStore', () => {
     expect(renderCountSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should not cause a rerender when the selected state does not change', () => {
+  it('should not rerender when non-selected state changes using an equalityFn', () => {
+    const store = createStore<Vector3>({ x: 0, y: 1, z: 2 });
+    const renderCountSpy = vi.fn();
+    const TestComponent = createRerenderTestComponent(
+      () =>
+        useStore(
+          store,
+          (state) => ({
+            x: state.x * 2,
+            y: state.y * 2,
+          }),
+          deepEqual,
+        ),
+      renderCountSpy,
+    );
+    render(<TestComponent />);
+    expect(renderCountSpy).toHaveBeenCalledTimes(1);
+    act(() => mergeState(store, { z: 3 }));
+    expect(renderCountSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not rerender when the selected state does not change', () => {
     const store = createStore<Vector3>({ x: 0, y: 1, z: 2 });
     const renderCountSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useStore(store, (state) => state.x), renderCountSpy);

@@ -1,9 +1,6 @@
 import { Draft, produce } from 'immer';
-import { Store } from '../types';
-import { Stores } from '../utils';
+import { Store, Stores } from '../types';
 import updateStatesWithProducer, { UpdateManyCallback } from '../utils/updateStatesWithProducer';
-
-export type { Stores } from '../utils';
 
 export type Drafts<T extends unknown[]> = { [K in keyof T]: Draft<T[K]> };
 
