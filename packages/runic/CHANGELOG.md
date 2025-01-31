@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.8
+
+- Fix: Migrated to NPM to resolve dependency issues.
+
 ## 0.1.7
 
 - Fix: Added the mutative integration to the exports declaration it can be imported.
