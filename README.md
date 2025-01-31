@@ -25,6 +25,12 @@ easy to understand and ergonomic to use.
 $ npm i
 ```
 
+**Run all tests**
+
+```bash
+$ npm run test
+```
+
 **Run example: Basic Counter**
 
 ```bash
