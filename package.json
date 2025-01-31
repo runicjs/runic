@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "npm run runic:build && npm run runic-react:build",
-    "test": "npm run test --workspaces --if-present",
+    "test": "npm run clean && npm run test --workspaces --if-present",
     "clean": "npm run clean --workspaces --if-present",
     "pack": "npm run pack --workspaces --if-present",
     "runic:build": "npm run build -w @runicjs/runic",
@@ -18,6 +18,6 @@
     "runic-react:test:watch": "npm run test:watch -w @runicjs/runic-react",
     "example:basic-counter:dev": "npm run dev -w basic-counter",
     "example:todo-mvc-react:dev": "npm run dev -w todo-mvc-react",
-    "ci:publish": "npm run ci:publish --workspaces --if-present"
+    "ci:publish": "npm run test && npm run ci:publish --workspaces --if-present"
   }
 }
