@@ -1,8 +1,9 @@
 # Changelog
 
-## 0.1.8
+## 0.1.9
 
 - Fix: Migrated to NPM to resolve dependency issues.
+- Fix: Fixed local development setup.
 
 ## 0.1.7
 

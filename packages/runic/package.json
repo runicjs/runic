@@ -1,7 +1,7 @@
 {
   "name": "@runicjs/runic",
   "description": "A lightweight, type-safe vanilla JS state management library",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "type": "module",
   "license": "MIT",
   "repository": "github:runicjs/runic",
@@ -17,22 +17,23 @@
   "authors": [
     "Will Bowers <william.bowers@gmail.com> (https://github.com/willurd)"
   ],
+  "main": "./dist/index.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "development": "./src/index.ts",
+      "runicdev": "./src/index.ts",
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./integrations/immer": {
-      "development": "./src/integrations/immer.ts",
+      "runicdev": "./src/integrations/immer.ts",
       "types": "./dist/integrations/immer.d.ts",
       "import": "./dist/integrations/immer.js",
       "default": "./dist/integrations/immer.js"
     },
     "./integrations/mutative": {
-      "development": "./src/integrations/mutative.ts",
+      "runicdev": "./src/integrations/mutative.ts",
       "types": "./dist/integrations/mutative.d.ts",
       "import": "./dist/integrations/mutative.js",
       "default": "./dist/integrations/mutative.js"

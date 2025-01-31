@@ -3,6 +3,9 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    conditions: ['runicdev'],
+  },
   test: {
     globals: true,
     environment: 'jsdom',
