@@ -15,8 +15,8 @@
     "runic-react:build": "npm run build -w @runicjs/runic-react",
     "runic-react:test": "npm run test -w @runicjs/runic-react",
     "runic-react:test:watch": "npm run test:watch -w @runicjs/runic-react",
-    "example:basic-counter:dev": "npm run dev -w @runicjs/basic-counter",
-    "example:todo-mvc-react:dev": "npm run dev -w @runicjs/todo-mvc-react",
+    "example:basic-counter:dev": "npm run dev -w basic-counter",
+    "example:todo-mvc-react:dev": "npm run dev -w todo-mvc-react",
     "ci:publish": "npm run publish --workspaces --if-present"
   }
 }
