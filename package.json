@@ -1,18 +1,22 @@
 {
   "private": true,
   "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
-    "build": "pnpm runic:build && pnpm runic-react:build",
-    "test": "pnpm --filter \"*\" test",
-    "clean": "pnpm --filter \"*\" clean",
-    "runic:build": "pnpm --filter runic build",
-    "runic:test": "pnpm --filter runic test",
-    "runic:test:watch": "pnpm --filter runic test:watch",
-    "runic-react:build": "pnpm --filter runic-react build",
-    "runic-react:test": "pnpm --filter runic-react test",
-    "runic-react:test:watch": "pnpm --filter runic-react test:watch",
-    "example:basic-counter:dev": "pnpm --filter basic-counter dev",
-    "example:todo-mvc-react:dev": "pnpm --filter todo-mvc-react dev",
-    "ci:publish": "pnpm publish -r"
+    "build": "npm run runic:build && npm run runic-react:build",
+    "test": "npm run test --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present",
+    "runic:build": "npm run build -w @runicjs/runic",
+    "runic:test": "npm run test -w @runicjs/runic",
+    "runic:test:watch": "npm run test:watch -w @runicjs/runic",
+    "runic-react:build": "npm run build -w @runicjs/runic-react",
+    "runic-react:test": "npm run test -w @runicjs/runic-react",
+    "runic-react:test:watch": "npm run test:watch -w @runicjs/runic-react",
+    "example:basic-counter:dev": "npm run dev -w @runicjs/basic-counter",
+    "example:todo-mvc-react:dev": "npm run dev -w @runicjs/todo-mvc-react",
+    "ci:publish": "npm run publish --workspaces --if-present"
   }
 }

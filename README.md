@@ -22,30 +22,30 @@ easy to understand and ergonomic to use.
 **Setup**
 
 ```bash
-$ pnpm i
+$ npm i
 ```
 
 **Run example: Basic Counter**
 
 ```bash
-$ pnpm example:basic-counter:dev
+$ npm run example:basic-counter:dev
 # open http://localhost:5173/
 ```
 
 **Publish all packages**
 
 ```bash
-$ pnpm ci:publish
+$ npm run ci:publish
 ```
 
 **Build package: Runic**
 
 ```bash
-$ runic:build
+$ npm run runic:build
 ```
 
 **Build package: Runic React**
 
 ```bash
-$ runic-react:build
+$ npm run runic-react:build
 ```
