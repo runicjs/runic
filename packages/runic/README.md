@@ -1,8 +1,9 @@
 # Runic
 
-Runic is a vanilla JS state management library. It's primary goal is to be
-simple, lightweight, and fast, and have a minimal API surface area that is
-easy to understand and ergonomic to use.
+Runic is the barebones core of [Runicjs](https://github.com/runicjs). It has a minimal
+API surface, providing only enough functionality to be a holder of state, while
+leaving the door open for more powerful abstractions to be built on top of it,
+such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runic-react).
 
 > **Warning**
 > Runic is in its infancy. It's not safe to use in production at this time.
