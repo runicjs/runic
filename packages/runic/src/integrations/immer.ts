@@ -1,5 +1,5 @@
 import { Draft, produce } from 'immer';
-import { RunicRune, RunicStateHolders } from '../types';
+import { RunicRune } from '../types';
 import updateWithProducer, { UpdateManyCallback } from '../utils/updateWithProducer';
 
 export type Drafts<T extends unknown[]> = { [K in keyof T]: Draft<T[K]> };
@@ -36,13 +36,10 @@ export function update<T extends unknown[], State>(rune: RunicRune<State>, recip
  *     });
  *   });
  */
-export function update<T extends unknown[], State>(
-  runes: RunicStateHolders<T>,
-  recipe: (drafts: Drafts<T>) => void,
-): void;
+export function update<T extends unknown[], State>(runes: RunicRune<T>, recipe: (drafts: Drafts<T>) => void): void;
 
 export function update<T extends unknown[], State>(
-  rune: RunicRune<State> | RunicStateHolders<T>,
+  rune: RunicRune<State> | RunicRune<T>,
   recipe: (draft: Draft<State> | Drafts<T>) => void,
 ): void {
   if (Array.isArray(rune)) {

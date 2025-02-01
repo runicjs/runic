@@ -1,4 +1,4 @@
-import { RunicStateHolders } from '../types';
+import { RunicRune } from '../types';
 
 export type UpdateManyCallback = (drafts: unknown[]) => void;
 
@@ -22,7 +22,7 @@ export type UpdateManyCallback = (drafts: unknown[]) => void;
  *   });
  */
 export default function updateWithProducer<T extends unknown[]>(
-  stores: RunicStateHolders<T>,
+  stores: RunicRune<T>,
   producer: any, // (state, (draft) => draft | undefined) => void
   callback: UpdateManyCallback,
 ) {

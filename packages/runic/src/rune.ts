@@ -1,6 +1,5 @@
 import { RunicListener, RunicRune, RunicUnsubscribe } from './types';
 
-// TODO: Move all of the listener logic into a separate class.
 export default function rune<State>(initialState: State): RunicRune<State> {
   type Self = RunicRune<State>;
   type Listener = { id: object; fn: RunicListener<State> };
@@ -14,6 +13,7 @@ export default function rune<State>(initialState: State): RunicRune<State> {
   let listeners: Array<Listener> = [];
 
   const get: Self['get'] = () => state;
+  const last: Self['last'] = () => lastState;
   const initial: Self['initial'] = () => initialState;
 
   // Replace the entire state and notify listeners.
@@ -80,6 +80,7 @@ export default function rune<State>(initialState: State): RunicRune<State> {
 
   return {
     get,
+    last,
     initial,
     set,
     subscribe,

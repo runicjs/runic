@@ -21,15 +21,9 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 
 ## Roadmap
 
-- [x] Implement `createStore`
-- [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic)
-- [x] Implement `mergeState`
-- [x] Implement `resetState`
-- [x] Implement Immer integrations (`updateState` & `updateStates`)
-- [x] Write tests
-- [ ] Test initialState passed to producer in updateState, updateStates
+- [ ] Move to a new API design (`createState` -> `rune`).
+- [ ] Move all of the listener logic out of `rune` and into a separate class.
 - [ ] Test store.destroy()
-- [ ] Implement Mutative integrations (`updateState` & `updateStates`)
 - [ ] Think about middleware
 - [ ] Come up with a solution for persistence
 - [ ] Come up with a solution for logging
@@ -43,18 +37,20 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 **Core**
 
 ```ts
-const person = rune({ name: 'Joe', age: 25 }) // create a new rune (a state holder)
-person.get() // => { name: 'Joe', age: 25 }
-person.set({ name: 'Joe', age: 26 }) // overwrite the entire state
-person.initial() // => { name: 'Joe', age: 25 }
-const unsubscribe = person.subscribe((state, lastState) => { ... }) // listen for changes
-unsubscribe() // stop listening for changes
-person.destroy() // clean up the rune
+import { rune } from '@runicjs/runic';
+const person = rune({ name: 'Joe', age: 25 }); // create a new rune (a state holder)
+person.get(); // => { name: 'Joe', age: 25 }
+person.set({ name: 'Joe', age: 26 }); // overwrite the entire state
+person.initial(); // => { name: 'Joe', age: 25 }
+const unsubscribe = person.subscribe((state, lastState) => { ... }); // listen for changes
+unsubscribe(); // stop listening for changes
+person.destroy(); // clean up the rune
 ```
 
 **Utils**
 
 ```ts
+import { patch, reset } from '@runicjs/runic';
 const person = rune({ name: 'Joe', age: 25 });
 patch(person, { age: 26 }); // merge the current state with a partial state
 reset(person); // reset to the initial state
@@ -69,13 +65,98 @@ import { update } from '@runicjs/runic/integrations/mutative';
 
 const person1 = rune({ name: 'Joe', age: 25 });
 const person1 = rune({ name: 'Jane', age: 26 });
-update(person1, (draft) => {
-  draft.age = 26;
+update(person1, (person1Draft) => {
+  person1Draft.age = 26;
 }); // use immer or mutative to make changes
-update([person1, person2], ([draft1, draft2]) => {
-  draft1.age = 30;
-  draft2.age = 31;
+update([person1, person2], ([person1Draft, person2Draft]) => {
+  person1Draft.age = 30;
+  person2Draft.age = 31;
 }); // use immer or mutative to change multiple stores together
+```
+
+## Naming
+
+Why the short names for these functions? Won't there be name collisions
+with my own code or other libraries? Ideally, you'll be writing your own
+getter/setter wrapper functions to work with your runes, and keeping those
+tucked away in their own file, so there shouldn't be much chance for collision.
+
+For example, here is one pattern you could adopt with RunicJS:
+
+```ts
+// <project-root>/src/stores/todoList.ts
+
+import { rune, patch } from '@runicjs/runic';
+import { update } from '@runicjs/runic/integrations/immer';
+
+export type Todo = {
+  id: string;
+  text: string;
+  done: boolean;
+};
+
+export type Filter = 'all' | 'completed' | 'incompleted';
+
+export type TodoListState = {
+  filter: Filter;
+  todos: Array<Todo>;
+};
+
+export const state = rune<TodoListState>({
+  filter: 'all',
+  todos: [],
+});
+
+export const setFilter = (filter: Filter): void => {
+  patch(state, { filter });
+};
+
+export const addTodo = (newTodo: Todo): void => {
+  update(state, (draft) => {
+    draft.todos.push(newTodo);
+  });
+};
+
+// <project-root>/src/App.ts
+
+import * as todoList from './stores/todoList';
+
+todoList.state.subscribe((state) => {
+  // Update your UI...
+});
+
+todoList.addTodo({ id: '1', text: 'Do a thing', done: true });
+todoList.addTodo({ id: '2', text: 'Do another thing', done: false });
+
+todoList.setFilter('completed');
+```
+
+## Naming Conventions
+
+Here are a set of guidelines you may find helpful when naming things:
+
+1. Things returned by `rune` are "runes".
+2. The type passed to `rune<Type>` is the "state type".
+3. State types should follow the convention `NounState`, e.g. `PersonState`.
+4. Runes should follow the convention `noun`, e.g. `const person = rune<PersonState>(...)`
+5. When using `update`, drafts should follow the convention `nounDraft`, e.g. `personDraft`.
+
+Here's a full example:
+
+```ts
+type PersonState = {
+  name: string;
+  age: number;
+};
+
+const person = rune<PersonState>({
+  name: 'John',
+  age: 25,
+});
+
+update(person, (personDraft) => {
+  personDraft.age++;
+});
 ```
 
 ## Usage
@@ -101,8 +182,8 @@ const unsubscribe = counter.subscribe((state) => {
 });
 
 // Update state (changes are made immutably via Immer)
-update(counter, (state) => {
-  state.count += 1;
+update(counter, (counterDraft) => {
+  counterDraft.count += 1;
 });
 
 // No more state updates.
@@ -122,12 +203,13 @@ reset(counter);
 type Todo = { id: number; text: string; done: boolean };
 type Todos = Array<Todo>;
 
-const todosStore = createStore<Todos>([]);
+// Runes are typed holders of state.
+const todos = rune<Todos>([]);
 
 // Write simple functions to update your stores.
 function addTodo(newTodo: Todo) {
-  updateState(todosStore, (todos) => {
-    todos.push(newTodo);
+  update(todos, (todosDraft) => {
+    todosDraft.push(newTodo);
   });
 }
 
@@ -137,15 +219,15 @@ addTodo({ id: 1, text: 'Learn Runic', done: false });
 ### Multi-Store Updates
 
 ```ts
-import { updateStates } from '@runicjs/runic/integrations/immer';
+import { update } from '@runicjs/runic/integrations/immer';
 
 // Create as many stores as you want.
-const userStore = createStore<User>({ credits: 100 });
-const inventoryStore = createStore<Inventory>(['potion']);
+const user = rune<User>({ credits: 100 });
+const inventory = rune<Inventory>(['potion']);
 
 // Update multiple stores at once.
-updateStates([userStore, inventoryStore], ([user, inventory]) => {
-  user.credits -= 50;
-  inventory.push('sword');
+update([user, inventory], ([userDraft, inventoryDraft]) => {
+  userDraft.credits -= 50;
+  inventoryDraft.push('sword');
 });
 ```
