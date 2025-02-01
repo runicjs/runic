@@ -5,7 +5,6 @@ import ClearCompleted from './ClearCompleted';
 import FilterButtons from './FilterButtons';
 import RemainingCount from './RemainingCount';
 
-// TODO: Why does this need to be outside of the component?
 const selectHasTodos = (state: app.State) => state.todos.length > 0;
 
 const Filters = memo(() => {
