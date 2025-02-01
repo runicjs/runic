@@ -2,13 +2,13 @@ export type SimpleState = {
   x: number;
 };
 
-export type Vector3 = {
+export type Vector3State = {
   x: number;
   y: number;
   z: number;
 };
 
-export type User = {
+export type UserState = {
   name: string;
   address: {
     street: string;

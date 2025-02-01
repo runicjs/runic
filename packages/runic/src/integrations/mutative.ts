@@ -1,6 +1,6 @@
 import { Draft, create } from 'mutative';
 import { RunicRune } from '../types';
-import updateWithProducer, { UpdateManyCallback } from '../utils/updateWithProducer';
+import updateWithProducer, { UpdateManyRecipe } from '../utils/updateWithProducer';
 
 export type Drafts<T extends unknown[]> = { [K in keyof T]: Draft<T[K]> };
 
@@ -21,8 +21,8 @@ export function update<T extends unknown[], State>(rune: RunicRune<State>, recip
  * Example:
  *   type Person = { name: string; age: number };
  *   type Address = { street: string; city: string; state: string; zip: string };
- *   const person = rune<Person>({ name: 'John', age: 25 });
- *   const address = rune<Address>({ street: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345' });
+ *   const person = createRune<Person>({ name: 'John', age: 25 });
+ *   const address = createRune<Address>({ street: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345' });
  *
  *   update([person, address], ([person, address]) => {
  *     //          Draft<Person>,  Draft<Address>
@@ -43,7 +43,7 @@ export function update<T extends unknown[], State>(
   recipe: (draft: Draft<State> | Drafts<T>) => void,
 ): void {
   if (Array.isArray(rune)) {
-    return updateWithProducer(rune, create, recipe as UpdateManyCallback);
+    return updateWithProducer(rune, create, recipe as UpdateManyRecipe);
   } else {
     rune.set(create(rune.get(), recipe));
   }

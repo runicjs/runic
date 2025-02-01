@@ -1,6 +1,6 @@
 import { RunicListener, RunicRune, RunicUnsubscribe } from './types';
 
-export default function rune<State>(initialState: State): RunicRune<State> {
+export default function createRune<State>(initialState: State): RunicRune<State> {
   type Self = RunicRune<State>;
   type Listener = { id: object; fn: RunicListener<State> };
 

@@ -1,6 +1,6 @@
 import { useRune } from '@runicjs/runic-react';
-import * as counter from './counter';
 import './index.css';
+import * as counter from './stores/counter';
 
 const Count = () => {
   const count = useRune(counter.rune, (counter) => counter.count);

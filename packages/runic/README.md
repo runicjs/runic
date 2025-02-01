@@ -21,8 +21,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 
 ## Roadmap
 
-- [ ] Move to a new API design (`createState` -> `rune`).
-  - [ ] Should I rename `rune()` to `createRune()`?
+- [ ] Move to a new API design (`createStore` -> `createRune`).
 - [ ] Test that `patch` does not modify the current state object directly, but returns a new one.
 - [ ] Move all of the listener logic out of `rune` and into a separate class.
 - [ ] Test `update` with primitive types.
@@ -40,8 +39,8 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 **Core**
 
 ```ts
-import { rune } from '@runicjs/runic';
-const person = rune({ name: 'Joe', age: 25 }); // create a new rune (a state holder)
+import { createRune } from '@runicjs/runic';
+const person = createRune({ name: 'Joe', age: 25 }); // create a new rune (a state holder)
 person.get(); // => { name: 'Joe', age: 25 }
 person.set({ name: 'Joe', age: 26 }); // overwrite the entire state
 person.initial(); // => { name: 'Joe', age: 25 }
@@ -54,7 +53,7 @@ person.destroy(); // clean up the rune
 
 ```ts
 import { patch, reset } from '@runicjs/runic';
-const person = rune({ name: 'Joe', age: 25 });
+const person = createRune({ name: 'Joe', age: 25 });
 patch(person, { age: 26 }); // merge the current state with a partial state
 reset(person); // reset to the initial state
 ```
@@ -66,8 +65,8 @@ reset(person); // reset to the initial state
 import { update } from '@runicjs/runic/integrations/immer';
 import { update } from '@runicjs/runic/integrations/mutative';
 
-const person1 = rune({ name: 'Joe', age: 25 });
-const person1 = rune({ name: 'Jane', age: 26 });
+const person1 = createRune({ name: 'Joe', age: 25 });
+const person1 = createRune({ name: 'Jane', age: 26 });
 
 update(person1, (draft) => {
   draft.age = 26;
@@ -101,7 +100,7 @@ For example, here is one pattern you could adopt with RunicJS:
 ```ts
 // <project-root>/src/stores/todoList.ts
 
-import { rune, patch } from '@runicjs/runic';
+import { createRune, patch } from '@runicjs/runic';
 import { update } from '@runicjs/runic/integrations/immer';
 
 export type Todo = {
@@ -117,7 +116,7 @@ export type TodoListState = {
   todos: Array<Todo>;
 };
 
-export const state = rune<TodoListState>({
+export const state = createRune<TodoListState>({
   filter: 'all',
   todos: [],
 });
@@ -150,10 +149,10 @@ todoList.setFilter('completed');
 
 Here are some guidelines you may find helpful when naming things:
 
-1. Things returned by `rune` are "runes".
-2. The type passed to `rune<Type>` is the "state type".
+1. Things returned by `createRune` are "runes".
+2. The type passed to `createRune<Type>` is the "state type".
 3. State types should follow the convention `NounState`, e.g. `PersonState`.
-4. Runes should follow the convention `noun = rune()`, e.g. `const person = rune<PersonState>(...)`.
+4. Runes should follow the convention `noun = createRune()`, e.g. `const person = createRune<PersonState>(...)`.
 5. When using `update`, drafts should follow the convention `nounDraft`, e.g. `personDraft`., or just `draft`.
 6. You may shorten draft names if it improves readability, e.g. `update([person1, person2], ([p1, p2]) => { ... })`.
    Compare that to `update([person1, person2], ([person1Draft, person2Draft]) => { ... })`.
@@ -167,7 +166,7 @@ type PersonState = {
   age: number;
 };
 
-const person = rune<PersonState>({
+const person = createRune<PersonState>({
   name: 'John',
   age: 25,
 });
@@ -186,7 +185,7 @@ const initialState = person.initial();
 ### Basic Store Creation and Updates
 
 ```ts
-import { rune } from '@runicjs/runic';
+import { createRune } from '@runicjs/runic';
 
 type CounterState = {
   name: string;
@@ -194,11 +193,11 @@ type CounterState = {
 };
 
 // Create a store with initial state
-const counter = rune<CounterState>({ name: 'Laps', count: 0 });
+const counter = createRune<CounterState>({ name: 'Laps', count: 0 });
 
 // Overwrite the entire state
 const storedState = JSON.parse(localStorage.getItem('counter-state'));
-counter.set(storedState); // Could also be passed directly to rune().
+counter.set(storedState); // Could also be passed directly to createRune().
 
 // Get the current state
 console.log('Current count:', counter.get().count);
@@ -231,10 +230,12 @@ type TodoListState = {
   todos: Array<Todo>;
 };
 
-// Runes are typed holders of state.
-const todoList = rune<TodoListState>({
+// Runes are type-safe holders of state.
+const todoList = createRune<TodoListState>({
   todos: [],
 });
+
+todoList.get(); // => TodoListState
 
 // Write simple functions to update your stores.
 function addTodo(newTodo: Todo) {
@@ -255,8 +256,8 @@ type UserState = { credits: number };
 type InventoryState = Array<string>;
 
 // Create as many stores as you want.
-const user = rune<UserState>({ credits: 100 });
-const inventory = rune<InventoryState>(['potion']);
+const user = createRune<UserState>({ credits: 100 });
+const inventory = createRune<InventoryState>(['potion']);
 
 // Update multiple stores at once.
 update([user, inventory], ([userDraft, inventoryDraft]) => {

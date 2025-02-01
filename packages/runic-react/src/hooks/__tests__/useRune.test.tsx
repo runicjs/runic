@@ -1,4 +1,4 @@
-import { patch, rune } from '@runicjs/runic';
+import { createRune, patch } from '@runicjs/runic';
 import { update } from '@runicjs/runic/integrations/immer';
 import { act, render, renderHook } from '@testing-library/react';
 import useRune from '../useRune';
@@ -7,20 +7,20 @@ import { createRerenderTestComponent } from './utils';
 
 describe('useRune', () => {
   it('should return the current state', () => {
-    const simple = rune<SimpleState>({ x: 0 });
+    const simple = createRune<SimpleState>({ x: 0 });
     const { result } = renderHook(() => useRune(simple, (state) => state.x));
     expect(result.current).toEqual(0);
   });
 
   it('should update when the store state changes', () => {
-    const simple = rune<SimpleState>({ x: 0 });
+    const simple = createRune<SimpleState>({ x: 0 });
     const { result } = renderHook(() => useRune(simple, (state) => state.x));
     act(() => simple.set({ x: 3 }));
     expect(result.current).toEqual(3);
   });
 
   it('should unsubscribe when the component unmounts', () => {
-    const simple = rune<SimpleState>({ x: 0 });
+    const simple = createRune<SimpleState>({ x: 0 });
     const { result, unmount } = renderHook(() => useRune(simple, (state) => state.x));
     unmount();
     act(() => simple.set({ x: 3 }));
@@ -28,7 +28,7 @@ describe('useRune', () => {
   });
 
   it('should rerender when the selected state changes', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const selectX = (state: Vector3State) => state.x;
     const TestComponent = createRerenderTestComponent(() => useRune(vector3, selectX), renderSpy);
@@ -39,7 +39,7 @@ describe('useRune', () => {
   });
 
   it('should not rerender when non-selected state changes', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useRune(vector3, (state) => state.x), renderSpy);
     render(<TestComponent />);
@@ -49,7 +49,7 @@ describe('useRune', () => {
   });
 
   it('should not rerender when non-selected state changes using an equalityFn', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(
       () =>
@@ -66,7 +66,7 @@ describe('useRune', () => {
   });
 
   it('should not rerender when the selected state does not change', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useRune(vector3, (state) => state.x), renderSpy);
     render(<TestComponent />);
@@ -76,7 +76,7 @@ describe('useRune', () => {
   });
 
   it('should rerender when the update callback changes selected data in the draft', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const selectX = (state: Vector3State) => state.x;
     const TestComponent = createRerenderTestComponent(() => useRune(vector3, selectX), renderSpy);
@@ -91,7 +91,7 @@ describe('useRune', () => {
   });
 
   it('should not rerender when the update callback does not change selected data in the draft', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useRune(vector3, (state) => state.x), renderSpy);
     render(<TestComponent />);
@@ -105,7 +105,7 @@ describe('useRune', () => {
   });
 
   it('should not rerender when the update callback changes unselected data in the draft', () => {
-    const vector3 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector3 = createRune<Vector3State>({ x: 0, y: 1, z: 2 });
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(() => useRune(vector3, (state) => state.x), renderSpy);
     render(<TestComponent />);

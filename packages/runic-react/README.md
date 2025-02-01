@@ -19,14 +19,14 @@ Runic React provides tools for working with Runic in React.
 ### `useRune`
 
 ```tsx
-import { rune } from '@runicjs/runic';
+import { createRune } from '@runicjs/runic';
 import { useRune } from '@runicjs/runic-react';
 
 type CounterState = {
   count: number;
 };
 
-export const counter = rune<CounterState>({
+export const counter = createRune<CounterState>({
   count: 0,
 });
 
@@ -64,7 +64,7 @@ function Counter() {
 ### `useRunes`
 
 ```ts
-import { rune } from '@runicjs/runic';
+import { createRune } from '@runicjs/runic';
 import { useRunes } from '@runicjs/runic-react';
 import deepEqual from 'fast-deep-equal';
 
@@ -72,7 +72,7 @@ type UserState = {
   id: number;
 };
 
-const user = rune<UserState>({
+const user = createRune<UserState>({
   id: 1,
 });
 
@@ -87,7 +87,7 @@ type TodoListState = {
   todos: Array<Todo>;
 };
 
-const todoList = rune<TodoListState>({
+const todoList = createRune<TodoListState>({
   todos: [
     { userId: 1, id: 1, text: 'First task', done: false },
     { userId: 2, id: 2, text: 'Second task', done: true },

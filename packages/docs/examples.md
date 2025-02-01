@@ -7,7 +7,7 @@ type CounterState = {
   count: number;
 };
 
-const counter = rune<CounterState>({
+const counter = createRune<CounterState>({
   count: 0;
 });
 ```
@@ -44,7 +44,7 @@ type Vector2 = {
   y: number;
 };
 
-const vector = rune<Vector2>({ x: 1, y: 2 });
+const vector = createRune<Vector2>({ x: 1, y: 2 });
 
 patch(vector, { x: 3 }); // { x: 3, y: 2 }
 ```
@@ -60,8 +60,8 @@ reset(counter); // { count: 0 }
 ```typescript
 import { update } from '@runicjs/runic/integrations/immer';
 
-const counter1 = rune<Counter>({ x: 0 });
-const counter2 = rune<Counter>({ x: 0 });
+const counter1 = createRune<Counter>({ x: 0 });
+const counter2 = createRune<Counter>({ x: 0 });
 
 update(counter1, (counterDraft) => {
   counterDraft.count++;
@@ -92,8 +92,8 @@ const Counter = () => {
 ## Using multiple runes
 
 ```typescript
-const vector1 = rune<Vector2>({ x: 1, y: 2 });
-const vector2 = rune<Vector2>({ x: 3, y: 4 });
+const vector1 = createRune<Vector2>({ x: 1, y: 2 });
+const vector2 = createRune<Vector2>({ x: 3, y: 4 });
 
 const VectorAddition = () => {
   const v3 = useRunes([vector1, vector2], ([v1, v2]) => ({

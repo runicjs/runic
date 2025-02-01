@@ -1,37 +1,49 @@
-import { RunicRune } from '../types';
+import { RunicRunes } from '../types';
 
-export type UpdateManyCallback = (drafts: unknown[]) => void;
+export type UpdateManyRecipe = (drafts: unknown[]) => void;
 
 /**
  * Takes a list of stores and a callback function that will be called with
  * a draft for each store.
  *
- * TODO: I'm having trouble making types for this. Going to table it for now.
+ * TODO: I'm having trouble making types for this. This should only be used
+ * by people who need advanced customization anyway. Most people should be
+ * fine with Immer or Mutative. And if not, this is always available, just
+ * not the friendliest thing to use.
+ *
+ * @param runes - The runes to update.
+ * @param producer - The function to use to create "drafts" for each rune's state.
+ * @param recipe - The function to use to update the runes.
  *
  * Example:
- *   type NumState = { num: number };
- *   type NumsState = { nums: number[] };
+ *   type Person = { name: string; age: number };
+ *   type Address = { street: string; city: string; state: string; zip: string };
+ *   const person = createRune<Person>({ name: 'John', age: 25 });
+ *   const address = createRune<Address>({ street: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345' });
  *
- *   const numStore1 = createStore<NumState>({ num: 1 });
- *   const numsStore = createStore<NumsState>({ nums: [2, 3, 4] });
- *   const numStore3 = createStore<NumState>({ num: 5 });
+ *   update([person, address], ([person, address]) => {
+ *     //          Draft<Person>,  Draft<Address>
+ *     console.log(person,         address);
+ *   });
  *
- *   updateStates([numStore1, numsStore, numStore3], ([num1, nums, num3]) => {
- *     //          Draft<NumState>, Draft<NumsState>, Draft<NumState>
- *     console.log(num1,            nums,             num3);
+ *   // The above is equivalent to this:
+ *   update(person, (person) => {
+ *     update(address, (address) => {
+ *       console.log(person, address);
+ *     });
  *   });
  */
 export default function updateWithProducer<T extends unknown[]>(
-  stores: RunicRune<T>,
+  runes: RunicRunes<T>,
   producer: any, // (state, (draft) => draft | undefined) => void
-  callback: UpdateManyCallback,
+  recipe: UpdateManyRecipe,
 ) {
   const drafts: Array<any> = [];
-  const queue = stores.slice();
+  const queue = runes.slice();
 
   function next() {
     if (queue.length === 0) {
-      callback(drafts);
+      recipe(drafts);
     } else {
       const store = queue.shift()!;
       const newState = producer(store.get(), (draft: unknown) => {

@@ -1,11 +1,11 @@
-import rune from '../../rune';
+import createRune from '../../createRune';
 import { update } from '../immer';
 import { SimpleState, Vector3 } from './types';
 
 describe('immer', () => {
   describe('update', () => {
     it('should call the given function with a draft of the current state and apply any changes synchronously', () => {
-      const store = rune<SimpleState>({ x: 0 });
+      const store = createRune<SimpleState>({ x: 0 });
 
       update(store, (draft) => {
         draft.x = 1;
@@ -15,7 +15,7 @@ describe('immer', () => {
     });
 
     it('should notify listeners of changes', () => {
-      const store = rune<Vector3>({ x: 0, y: 1, z: 2 });
+      const store = createRune<Vector3>({ x: 0, y: 1, z: 2 });
       const listener = vi.fn();
       store.subscribe(listener);
       update(store, (draft) => {
@@ -25,8 +25,8 @@ describe('immer', () => {
     });
 
     it('should call the given function with drafts of all current states and apply any changes synchronously', () => {
-      const simpleStateStore = rune<SimpleState>({ x: 0 });
-      const vector3Store = rune<Vector3>({ x: 1, y: 2, z: 3 });
+      const simpleStateStore = createRune<SimpleState>({ x: 0 });
+      const vector3Store = createRune<Vector3>({ x: 1, y: 2, z: 3 });
 
       update([simpleStateStore, vector3Store], ([simpleState, vector3]) => {
         simpleState.x = 1;

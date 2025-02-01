@@ -1,4 +1,4 @@
-import { rune as runicRune } from '@runicjs/runic';
+import { createRune } from '@runicjs/runic';
 import { update } from '@runicjs/runic/integrations/mutative';
 import { Draft } from 'mutative';
 import { Filter, Todo } from '../types';
@@ -39,7 +39,7 @@ const saveState = (state: State) => {
   localStorage.setItem(StorageKey, JSON.stringify(state));
 };
 
-export const rune = runicRune<State>(loadState());
+export const rune = createRune<State>(loadState());
 rune.subscribe(saveState);
 
 export const selectFilter = (state: State) => state.filter;
