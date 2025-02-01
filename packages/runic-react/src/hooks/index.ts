@@ -1,2 +1,2 @@
-export { default as useStore } from './useStore';
-export { default as useStores } from './useStores';
+export { default as useStore } from './useRune';
+export { default as useStores } from './useRunes';

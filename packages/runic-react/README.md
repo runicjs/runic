@@ -3,55 +3,50 @@
 Runic React provides tools for working with Runic in React.
 
 > **Warning**
-> Runic React is in its infancy. It's not safe to use in production at this time.
+> RunicJS is in its infancy. It's not safe to use in production at this time.
 
 ## Roadmap
 
-- [x] Implement `useStore`
-- [x] Publish a proper build to NPM (https://www.npmjs.com/package/@runicjs/runic-react)
-- [x] Write tests
-- [x] Implement `useStores`
 - [ ] Test selector that relies on a value from another selector that just changed
 - [ ] Test default selector (entire state)
 - [ ] Test creating stores dynamically (e.g. in a Context) and destroying them
-- [ ] Implement TodoMVC using runic-react
-- [ ] Verify that there are no unnecessary rerenders
+- [ ] Verify that there are no unnecessary rerenders (with tests)
 - [ ] Implement a larger app with more complex state using runic. RealWorld perhaps?
 
 ## Usage
 
-### `useStore`
+### `useRune`
 
 ```tsx
-import { createStore } from '@runicjs/runic';
-import { useStore } from '@runicjs/runic-react';
+import { rune } from '@runicjs/runic';
+import { useRune } from '@runicjs/runic-react';
 
-type Counter = {
+type CounterState = {
   count: number;
 };
 
-export const counterStore = createStore<Counter>({
+export const counter = rune<CounterState>({
   count: 0,
 });
 
 export const increment = () => {
-  updateState(counterStore, (counter) => {
-    counter.count++;
+  updateState(counter, (counterDraft) => {
+    counterDraft.count++;
   });
 };
 
 export const decrement = () => {
-  updateState(counterStore, (counter) => {
-    counter.count--;
+  updateState(counter, (counterDraft) => {
+    counterDraft.count--;
   });
 };
 
 function Counter() {
   // Only re-renders when count changes
-  const count = useStore(counterStore, (counter) => counter.count);
+  const count = useRune(counter, (counter) => counter.count);
 
   // "Computed" value
-  const doubled = useStore(counterStore, (counter) => counter.count * 2);
+  const doubled = useRune(counter, (counter) => counter.count * 2);
 
   return (
     <div>
@@ -65,27 +60,33 @@ function Counter() {
 }
 ```
 
-### `useStores`
+### `useRunes`
 
 ```ts
-import { createStore } from '@runicjs/runic';
-import { useStores } from '@runicjs/runic-react';
+import { rune } from '@runicjs/runic';
+import { useRunes } from '@runicjs/runic-react';
 import deepEqual from 'fast-deep-equal';
 
-type User = {
+type UserState = {
   id: number;
 };
 
-const userStore = createStore<User>({
+const user = rune<UserState>({
   id: 1,
 });
 
-type Todo = { userId: number; id: number; text: string; done: boolean };
-type TodoList = {
+type Todo = {
+  userId: number;
+  id: number;
+  text: string;
+  done: boolean;
+};
+
+type TodoListState = {
   todos: Array<Todo>;
 };
 
-const todoListStore = createStore<TodoList>({
+const todoList = rune<TodoListState>({
   todos: [
     { userId: 1, id: 1, text: 'First task', done: false },
     { userId: 2, id: 2, text: 'Second task', done: true },
@@ -94,14 +95,11 @@ const todoListStore = createStore<TodoList>({
 });
 
 const UserTodos = () => {
-  const userTodos = useStores<IncompleteTodos>(
-    // Listen for changes to any store that is passed in.
-    [userStore, todoListStore],
-    ([user, todoList]) => {
-      return todoList.todos.filter((todo) => todo.userId === user.id);
+  const userTodos = useRunes<Array<Todo>>(
+    [user, todoList], // Listens for changes to any store that is passed in.
+    ([userState, todoListState]) => {
+      return todoListState.todos.filter((todo) => todo.userId === userState.id);
     },
-    // Gives you control over whether to rerender after the selector runs.
-    deepEqual,
   );
 };
 ```

@@ -1,10 +1,10 @@
 # Runic
 
-Runicjs is a vanilla JS state management library. It's primary goal is to be
-simple, lightweight, and fast.
+RunicJS is a vanilla JS state management library. It's primary design goal is
+to be simple, lightweight, and fast.
 
 > **Warning**
-> Runic is in its infancy. It's not safe to use in production at this time.
+> RunicJS is in its infancy. It's not safe to use in production at this time.
 
 ## Roadmap
 

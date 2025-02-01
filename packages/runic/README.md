@@ -1,12 +1,12 @@
 # Runic
 
-Runic is the barebones core of [Runicjs](https://github.com/runicjs). It has a minimal
+Runic is the barebones core of [RunicJS](https://github.com/runicjs). It has a minimal
 API surface, providing only enough functionality to be a holder of state, while
 leaving the door open for more powerful abstractions to be built on top of it,
 such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runic-react).
 
 > **Warning**
-> Runic is in its infancy. It's not safe to use in production at this time.
+> RunicJS is in its infancy. It's not safe to use in production at this time.
 
 ## Features
 
@@ -23,6 +23,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 
 - [ ] Move to a new API design (`createState` -> `rune`).
 - [ ] Move all of the listener logic out of `rune` and into a separate class.
+- [ ] Test `update` with primitive types.
 - [ ] Test store.destroy()
 - [ ] Think about middleware
 - [ ] Come up with a solution for persistence
@@ -133,13 +134,14 @@ todoList.setFilter('completed');
 
 ## Naming Conventions
 
-Here are a set of guidelines you may find helpful when naming things:
+Here are some guidelines you may find helpful when naming things:
 
 1. Things returned by `rune` are "runes".
 2. The type passed to `rune<Type>` is the "state type".
 3. State types should follow the convention `NounState`, e.g. `PersonState`.
-4. Runes should follow the convention `noun`, e.g. `const person = rune<PersonState>(...)`
+4. Runes should follow the convention `noun = rune()`, e.g. `const person = rune<PersonState>(...)`
 5. When using `update`, drafts should follow the convention `nounDraft`, e.g. `personDraft`.
+6. The values returned by `get`, `last`, and `initial` are "states".
 
 Here's a full example:
 
@@ -157,6 +159,10 @@ const person = rune<PersonState>({
 update(person, (personDraft) => {
   personDraft.age++;
 });
+
+const currentState = person.get();
+const lastState = person.last();
+const initialState = person.initial();
 ```
 
 ## Usage
@@ -166,12 +172,17 @@ update(person, (personDraft) => {
 ```ts
 import { rune } from '@runicjs/runic';
 
-type Counter = {
+type CounterState = {
+  name: string;
   count: number;
 };
 
 // Create a store with initial state
-const counter = rune<Counter>({ count: 0 });
+const counter = rune<CounterState>({ name: 'Laps', count: 0 });
+
+// Overwrite the entire state
+const storedState = JSON.parse(localStorage.getItem('counter-state'));
+counter.set(storedState); // Could also be passed directly to rune().
 
 // Get the current state
 console.log('Current count:', counter.get().count);
@@ -181,6 +192,9 @@ const unsubscribe = counter.subscribe((state) => {
   console.log('New count:', state.count);
 });
 
+// Merge in a partial state.
+patch({ count: 5 });
+
 // Update state (changes are made immutably via Immer)
 update(counter, (counterDraft) => {
   counterDraft.count += 1;
@@ -188,10 +202,6 @@ update(counter, (counterDraft) => {
 
 // No more state updates.
 unsubscribe();
-
-// Overwrite the entire state
-const storedState = JSON.parse(localStorage.getItem('counter-store'));
-counter.set(storedState);
 
 // Reset the store to the initial state
 reset(counter);
@@ -201,15 +211,19 @@ reset(counter);
 
 ```ts
 type Todo = { id: number; text: string; done: boolean };
-type Todos = Array<Todo>;
+type TodoListState = {
+  todos: Array<Todo>;
+};
 
 // Runes are typed holders of state.
-const todos = rune<Todos>([]);
+const todoList = rune<TodoListState>({
+  todos: [],
+});
 
 // Write simple functions to update your stores.
 function addTodo(newTodo: Todo) {
-  update(todos, (todosDraft) => {
-    todosDraft.push(newTodo);
+  update(todoList, (todoListDraft) => {
+    todoListDraft.todos.push(newTodo);
   });
 }
 
@@ -221,9 +235,12 @@ addTodo({ id: 1, text: 'Learn Runic', done: false });
 ```ts
 import { update } from '@runicjs/runic/integrations/immer';
 
+type UserState = { credits: number };
+type InventoryState = Array<string>;
+
 // Create as many stores as you want.
-const user = rune<User>({ credits: 100 });
-const inventory = rune<Inventory>(['potion']);
+const user = rune<UserState>({ credits: 100 });
+const inventory = rune<InventoryState>(['potion']);
 
 // Update multiple stores at once.
 update([user, inventory], ([userDraft, inventoryDraft]) => {

@@ -1,22 +1,22 @@
-import type { EqualityFn, RunicRune, RunicSelector } from '@runicjs/runic';
+import type { RunicEqualityFn, RunicRune, RunicSelector } from '@runicjs/runic';
 import { useEffect, useState } from 'react';
 import { defaultEqualityFn } from '../utils';
 
-export default function useStore<State>(store: RunicRune<State>): State;
-export default function useStore<State, Value>(store: RunicRune<State>, selector: RunicSelector<State, Value>): Value;
-export default function useStore<State, Value>(
+export default function useRune<State>(store: RunicRune<State>): State;
+export default function useRune<State, Value>(store: RunicRune<State>, selector: RunicSelector<State, Value>): Value;
+export default function useRune<State, Value>(
   store: RunicRune<State>,
   selector: RunicSelector<State, Value>,
-  equalityFn: EqualityFn<Value>,
+  equalityFn: RunicEqualityFn<Value>,
 ): Value;
 
-export default function useStore<State, Value>(
+export default function useRune<State, Value>(
   store: RunicRune<State>,
   // It's unfortunate that I have to resort to casting here.
   selector: (state: State) => Value = (v) => v as unknown as Value,
-  equalityFn: EqualityFn<Value> = defaultEqualityFn,
+  equalityFn: RunicEqualityFn<Value> = defaultEqualityFn,
 ): Value {
-  const [value, setValue] = useState<Value>(selector(store.getState()));
+  const [value, setValue] = useState<Value>(selector(store.get()));
 
   useEffect(() => {
     return store.subscribe((state) => {
