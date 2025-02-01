@@ -35,7 +35,7 @@
   "scripts": {
     "test": "vitest --run",
     "test:watch": "vitest",
-    "clean": "rimraf dist",
+    "clean": "rimraf --glob dist *.tgz",
     "build": "npm run clean && tsc",
     "pack": "npm run build && npm pack",
     "prepublishOnly": "npm run build",

@@ -1,16 +1,16 @@
-export type ListenerFn<State> = (state: State) => void;
-export type UnsubscribeFn = () => void;
+export type RunicListener<State> = (state: State, lastState: State) => void;
+export type RunicUnsubscribe = () => void;
 
-export type Store<State> = {
-  getState: () => State;
-  getInitialState: () => State;
-  setState: (nextState: State) => void;
-  subscribe: (fn: ListenerFn<State>) => UnsubscribeFn;
+export type RunicRune<State> = {
+  get: () => Readonly<State>;
+  initial: () => Readonly<State>;
+  set: (next: State) => void;
+  subscribe: (fn: RunicListener<State>) => RunicUnsubscribe;
   destroy: () => void;
 };
 
-export type Selector<State, Value> = (state: State) => Value;
+export type RunicSelector<State, Value> = (state: State) => Value;
 
-export type Stores<T extends unknown[]> = { [K in keyof T]: Store<T[K]> };
+export type RunicEqualityFn<T> = (a: T, b: T) => boolean;
 
-export type EqualityFn<T> = (a: T, b: T) => boolean;
+export type RunicStateHolders<T extends unknown[]> = { [K in keyof T]: RunicRune<T[K]> };

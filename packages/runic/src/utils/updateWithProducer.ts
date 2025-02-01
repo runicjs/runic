@@ -1,4 +1,4 @@
-import { Stores } from '../types';
+import { RunicStateHolders } from '../types';
 
 export type UpdateManyCallback = (drafts: unknown[]) => void;
 
@@ -6,7 +6,7 @@ export type UpdateManyCallback = (drafts: unknown[]) => void;
  * Takes a list of stores and a callback function that will be called with
  * a draft for each store.
  *
- * TODO: Having trouble making a types for this. Going to table it for now.
+ * TODO: I'm having trouble making types for this. Going to table it for now.
  *
  * Example:
  *   type NumState = { num: number };
@@ -21,8 +21,8 @@ export type UpdateManyCallback = (drafts: unknown[]) => void;
  *     console.log(num1,            nums,             num3);
  *   });
  */
-export default function updateStatesWithProducer<T extends unknown[]>(
-  stores: Stores<T>,
+export default function updateWithProducer<T extends unknown[]>(
+  stores: RunicStateHolders<T>,
   producer: any, // (state, (draft) => draft | undefined) => void
   callback: UpdateManyCallback,
 ) {
@@ -34,11 +34,11 @@ export default function updateStatesWithProducer<T extends unknown[]>(
       callback(drafts);
     } else {
       const store = queue.shift()!;
-      const newState = producer(store.getState(), (draft: any) => {
+      const newState = producer(store.get(), (draft: unknown) => {
         drafts.push(draft);
         next();
       });
-      store.setState(newState);
+      store.set(newState);
     }
   }
 

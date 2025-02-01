@@ -1,22 +1,25 @@
-import { ListenerFn, Store, UnsubscribeFn } from './types';
+import { RunicListener, RunicRune, RunicUnsubscribe } from './types';
 
-export default function createStore<State>(initialState: State): Store<State> {
-  let state = initialState;
+// TODO: Move all of the listener logic into a separate class.
+export default function rune<State>(initialState: State): RunicRune<State> {
+  type Self = RunicRune<State>;
+  type Listener = { id: object; fn: RunicListener<State> };
+
+  let lastState: State = initialState;
+  let state: State = initialState;
 
   // Arrays beat sets by a slim margin.
   // Set   x 177,651 ops/sec
   // Array x 190,497 ops/sec
-  let listeners: Array<{ id: object; fn: ListenerFn<State> }> = [];
+  let listeners: Array<Listener> = [];
 
-  // Return the current state.
-  const getState: Store<State>['getState'] = () => state;
-
-  // Return the initial state.
-  const getInitialState: Store<State>['getInitialState'] = () => initialState;
+  const get: Self['get'] = () => state;
+  const initial: Self['initial'] = () => initialState;
 
   // Replace the entire state and notify listeners.
-  const setState: Store<State>['setState'] = (nextState: State) => {
-    state = nextState;
+  const set: Self['set'] = (next: State) => {
+    lastState = state;
+    state = next;
 
     // forEach is significantly faster than for-of at 10,000 listeners,
     // but evens out around 100,000 listeners. 10,000 listeners should be
@@ -29,11 +32,14 @@ export default function createStore<State>(initialState: State): Store<State> {
     // 100,000 listeners:
     // for of  x 8,823 ops/sec ±0.52% (92 runs sampled)
     // forEach x 7,277 ops/sec ±13.65% (89 runs sampled)
-    listeners.forEach((listener) => listener.fn(state));
+    listeners.forEach((listener) => listener.fn(state, lastState));
   };
 
   // Subscribe for updates to the state.
-  const subscribe: Store<State>['subscribe'] = (fn: ListenerFn<State>): UnsubscribeFn => {
+  const subscribe: Self['subscribe'] = (fn: RunicListener<State>): RunicUnsubscribe => {
+    // First things first, let's give the listener the current state.
+    fn(state, lastState);
+
     // Object IDs beat Symbols and wrapper functions in speed until
     // you reach over 1,000 listeners, then it's about even. This
     // implementation should be fast enough for most use cases.
@@ -58,7 +64,6 @@ export default function createStore<State>(initialState: State): Store<State> {
     // TODO: Maybe there's an even faster way to do listeners?
     const id = {};
     listeners.push({ id, fn });
-    fn(getState());
 
     return () => {
       const index = listeners.findIndex((l) => l.id === id);
@@ -68,14 +73,15 @@ export default function createStore<State>(initialState: State): Store<State> {
   };
 
   // Clean up the store if it's no longer needed.
-  const destroy: Store<State>['destroy'] = () => {
+  // TODO: Is this function really necessary?
+  const destroy: Self['destroy'] = () => {
     listeners = [];
   };
 
   return {
-    getState,
-    getInitialState,
-    setState,
+    get,
+    initial,
+    set,
     subscribe,
     destroy,
   };

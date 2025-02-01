@@ -1,46 +1,53 @@
 import { Draft, produce } from 'immer';
-import { Store, Stores } from '../types';
-import updateStatesWithProducer, { UpdateManyCallback } from '../utils/updateStatesWithProducer';
+import { RunicRune, RunicStateHolders } from '../types';
+import updateWithProducer, { UpdateManyCallback } from '../utils/updateWithProducer';
 
 export type Drafts<T extends unknown[]> = { [K in keyof T]: Draft<T[K]> };
 
 /**
- * Update the store using Immer.
- * @param store - The store to update.
- * @param recipe - The function to use to update the store.
+ * Update a single rune using Immer.
+ *
+ * @param rune - The rune to update.
+ * @param recipe - The function to use to update the rune.
  */
-export const updateState = <State>(
-  store: Store<State>,
-  recipe: (draft: Draft<State>, initialState?: State) => void,
-) => {
-  store.setState(produce(store.getState(), recipe));
-};
+export function update<T extends unknown[], State>(rune: RunicRune<State>, recipe: (draft: Draft<State>) => void): void;
 
 /**
- * Update multiple stores simultaneously using Immer.
+ * Update multiple runes simultaneously using Immer.
+ *
+ * @param runes - The runes to update.
+ * @param recipe - The function to use to update the runes.
  *
  * Example:
- *   type NumState = { num: number };
- *   type NumsState = { nums: number[] };
- *   const numStore1 = createStore<NumState>({ num: 1 });
- *   const numsStore = createStore<NumsState>({ nums: [2, 3, 4] });
- *   const numStore3 = createStore<NumState>({ num: 5 });
+ *   type Person = { name: string; age: number };
+ *   type Address = { street: string; city: string; state: string; zip: string };
+ *   const person = rune<Person>({ name: 'John', age: 25 });
+ *   const address = rune<Address>({ street: '123 Main St', city: 'Anytown', state: 'CA', zip: '12345' });
  *
- *   // This:
- *   updateStates([numStore1, numsStore, numStore3], ([num1, nums, num3]) => {
- *     //          Draft<NumState>, Draft<NumsState>, Draft<NumState>
- *     console.log(num1,            nums,             num3);
+ *   update([person, address], ([person, address]) => {
+ *     //          Draft<Person>,  Draft<Address>
+ *     console.log(person,         address);
  *   });
  *
- *   // is equivalent to this:
- *   updateState(numStore1, (num1) => {
- *     updateState(numsStore, (nums) => {
- *       updateState(numStore3, (num3) => {
- *         console.log(num1, nums, num3);
- *       });
+ *   // The above is equivalent to this:
+ *   update(person, (person) => {
+ *     update(address, (address) => {
+ *       console.log(person, address);
  *     });
  *   });
  */
-export function updateStates<T extends unknown[]>(stores: Stores<T>, fn: (drafts: Drafts<T>) => void) {
-  return updateStatesWithProducer(stores, produce, fn as UpdateManyCallback);
+export function update<T extends unknown[], State>(
+  runes: RunicStateHolders<T>,
+  recipe: (drafts: Drafts<T>) => void,
+): void;
+
+export function update<T extends unknown[], State>(
+  rune: RunicRune<State> | RunicStateHolders<T>,
+  recipe: (draft: Draft<State> | Drafts<T>) => void,
+): void {
+  if (Array.isArray(rune)) {
+    return updateWithProducer(rune, produce, recipe as UpdateManyCallback);
+  } else {
+    rune.set(produce(rune.get(), recipe));
+  }
 }

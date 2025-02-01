@@ -1,3 +1,3 @@
-export { default as mergeState } from './mergeState';
-export { default as resetState } from './resetState';
-export { default as updateStatesWithProducer } from './updateStatesWithProducer';
+export { default as patch } from './patch';
+export { default as reset } from './reset';
+export { default as updateWithProducer } from './updateWithProducer';

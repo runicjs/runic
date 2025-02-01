@@ -27,7 +27,6 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 - [x] Implement `resetState`
 - [x] Implement Immer integrations (`updateState` & `updateStates`)
 - [x] Write tests
-- [x] Should I renamed "merge" to "patch"? - No
 - [ ] Test initialState passed to producer in updateState, updateStates
 - [ ] Test store.destroy()
 - [ ] Implement Mutative integrations (`updateState` & `updateStates`)
@@ -39,26 +38,70 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 - [ ] Implement remaining functionality
 - [ ] Implement TodoMVC in vanilla JS using runic
 
+## API
+
+**Core**
+
+```ts
+const person = rune({ name: 'Joe', age: 25 }) // create a new rune (a state holder)
+person.get() // => { name: 'Joe', age: 25 }
+person.set({ name: 'Joe', age: 26 }) // overwrite the entire state
+person.initial() // => { name: 'Joe', age: 25 }
+const unsubscribe = person.subscribe((state, lastState) => { ... }) // listen for changes
+unsubscribe() // stop listening for changes
+person.destroy() // clean up the rune
+```
+
+**Utils**
+
+```ts
+const person = rune({ name: 'Joe', age: 25 });
+patch(person, { age: 26 }); // merge the current state with a partial state
+reset(person); // reset to the initial state
+```
+
+**Integrations**
+
+```ts
+// Choose one. They have the same API.
+import { update } from '@runicjs/runic/integrations/immer';
+import { update } from '@runicjs/runic/integrations/mutative';
+
+const person1 = rune({ name: 'Joe', age: 25 });
+const person1 = rune({ name: 'Jane', age: 26 });
+update(person1, (draft) => {
+  draft.age = 26;
+}); // use immer or mutative to make changes
+update([person1, person2], ([draft1, draft2]) => {
+  draft1.age = 30;
+  draft2.age = 31;
+}); // use immer or mutative to change multiple stores together
+```
+
 ## Usage
 
 ### Basic Store Creation and Updates
 
-```js
-import { createStore } from '@runicjs/runic';
+```ts
+import { rune } from '@runicjs/runic';
+
+type Counter = {
+  count: number;
+};
 
 // Create a store with initial state
-const counterStore = createStore({ count: 0 });
+const counter = rune<Counter>({ count: 0 });
 
 // Get the current state
-console.log('Current count:', counterStore.getState().count);
+console.log('Current count:', counter.get().count);
 
 // Subscribe to changes
-const unsubscribe = counterStore.subscribe((state) => {
+const unsubscribe = counter.subscribe((state) => {
   console.log('New count:', state.count);
 });
 
 // Update state (changes are made immutably via Immer)
-updateState(counterStore, (state) => {
+update(counter, (state) => {
   state.count += 1;
 });
 
@@ -67,10 +110,10 @@ unsubscribe();
 
 // Overwrite the entire state
 const storedState = JSON.parse(localStorage.getItem('counter-store'));
-counterStore.setState(storedState);
+counter.set(storedState);
 
 // Reset the store to the initial state
-resetState(counterStore);
+reset(counter);
 ```
 
 ### TypeScript Support
