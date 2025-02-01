@@ -11,7 +11,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 ## Features
 
 - Simple API with a plain JavaScript approach to state updates
-- Updates powered by [Immer](https://immerjs.github.io/immer/) to avoid excessive boilerplate
+- Updates powered by [Immer](https://immerjs.github.io/immer/) or [Mutative](https://mutative.js.org/) to avoid excessive boilerplate
 - Full TypeScript support with strong type inference
 - Core implementation is ~25 sloc and has no dependencies
 - Optional integrations with Immer, Mutative, and more
@@ -21,7 +21,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 
 ## Roadmap
 
-- [ ] Move to a new API design (`createStore` -> `createRune`).
+- [x] Move to a new API design (`createStore` -> `createRune`).
 - [ ] Test that `patch` does not modify the current state object directly, but returns a new one.
 - [ ] Move all of the listener logic out of `rune` and into a separate class.
 - [ ] Test `update` with primitive types.
