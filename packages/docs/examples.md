@@ -1,119 +1,109 @@
 # Examples
 
-## Creating a store
+## Creating a rune
 
 ```typescript
 type CounterState = {
   count: number;
 };
 
-const store = createStore<CounterState>({ count: 0 });
+const counter = rune<CounterState>({
+  count: 0;
+});
 ```
 
 ## Getting the current state
 
 ```typescript
-store.getState(); // { count: 0 }
+counter.get(); // { count: 0 }
 ```
 
 ## Replacing the state
 
 ```typescript
-store.setState({ count: 1 }); // { count: 1 }
+counter.set({ count: 1 }); // { count: 1 }
 ```
 
 ## Subscribing to state changes
 
 ```typescript
-const unsubscribe = store.subscribe((state) => {
-  console.log(state); // { count: 2 }
+const unsubscribe = counter.subscribe((counterState) => {
+  console.log(counterState); // { count: 2 } after call to set() below
 });
 
-store.setState({ count: 2 });
+counter.set({ count: 2 });
 
 unsubscribe(); // unsubscribed
 ```
 
-## Merging a partial state into the store
+## Merging a partial state into the rune
 
 ```typescript
-const vec1Store = createStore<Vector2>({ x: 1, y: 2 });
+type Vector2 = {
+  x: number;
+  y: number;
+};
 
-mergeState(vec1Store, { x: 3 }); // { x: 3, y: 2 }
+const vector = rune<Vector2>({ x: 1, y: 2 });
+
+patch(vector, { x: 3 }); // { x: 3, y: 2 }
 ```
 
 ## Resetting the state back to the initial state
 
 ```typescript
-resetState(store); // { count: 0 }
+reset(counter); // { count: 0 }
 ```
 
-## Updating the state with immer
+## Updating state with Immer
 
 ```typescript
-import { updateState } from '@runicjs/runic/integrations/immer';
+import { update } from '@runicjs/runic/integrations/immer';
 
-updateState(store, (draft) => {
-  draft.count++;
+const counter1 = rune<Counter>({ x: 0 });
+const counter2 = rune<Counter>({ x: 0 });
+
+update(counter1, (counterDraft) => {
+  counterDraft.count++;
 }); // { count: 1 }
+
+update([counter1, counter2], ([counter1Draft, counter2Draft]) => {
+  counter1Draft.count++;
+  counter2Draft.count = counter1Draft.count * 2;
+}); // { count: 2 }, { count: 4 }
 ```
 
-## Updating multiple stores with immer
+## Updating state with Mutative
 
 ```typescript
-import { updateState } from '@runicjs/runic/integrations/immer';
-
-updateStates([store1, store2], ([state1, state2]) => {
-  state1.count++;
-  state2.count = state1.count * 2;
-}); // { count: 1 }, { count: 2 }
-```
-
-## Updating the state with mutative
-
-```typescript
-import { updateState } from '@runicjs/runic/integrations/mutative';
-
-updateState(store, (draft) => {
-  draft.count++;
-}); // { count: 1 }
-```
-
-## Updating multiple stores with mutative
-
-```typescript
-import { updateState } from '@runicjs/runic/integrations/mutative';
-
-updateStates([store1, store2], ([state1, state2]) => {
-  state1.count++;
-  state2.count = state1.count * 2;
-}); // { count: 1 }, { count: 2 }
+import { update } from '@runicjs/runic/integrations/mutative';
+// Same as Immer...
 ```
 
 ## Using a selector
 
 ```typescript
 const Counter = () => {
-  const count = useStore(store, (state) => state.count);
+  const count = useRune(counter, (counterState) => counterState.count);
   return <div>{count}</div>; // <div>0</div>
 };
 ```
 
-## Using multiple stores
+## Using multiple runes
 
 ```typescript
-type Vector2 = { x: number; y: number };
-const vec1Store = createStore<Vector2>({ x: 1, y: 2 });
-const vec2Store = createStore<Vector2>({ x: 3, y: 4 });
+const vector1 = rune<Vector2>({ x: 1, y: 2 });
+const vector2 = rune<Vector2>({ x: 3, y: 4 });
 
 const VectorAddition = () => {
-  const vec3 = useStores([vec1Store, vec2Store], ([vec1, vec2]) => ({
-    x: vec1.x + vec2.x,
-    y: vec1.y + vec2.y,
+  const v3 = useRunes([vector1, vector2], ([v1, v2]) => ({
+    x: v1.x + v2.x,
+    y: v1.y + v2.y,
   }));
+
   return (
     <div>
-      ({vec3.x}, {vec3.y})
+      ({v3.x}, {v3.y})
     </div>
   ); // <div>(4, 6)</div>
 };

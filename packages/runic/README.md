@@ -67,21 +67,33 @@ import { update } from '@runicjs/runic/integrations/mutative';
 
 const person1 = rune({ name: 'Joe', age: 25 });
 const person1 = rune({ name: 'Jane', age: 26 });
+
 update(person1, (person1Draft) => {
   person1Draft.age = 26;
 }); // use immer or mutative to make changes
+
 update([person1, person2], ([person1Draft, person2Draft]) => {
   person1Draft.age = 30;
   person2Draft.age = 31;
 }); // use immer or mutative to change multiple stores together
 ```
 
-## Naming
+## Notes on Naming
 
-Why the short names for these functions? Won't there be name collisions
-with my own code or other libraries? Ideally, you'll be writing your own
-getter/setter wrapper functions to work with your runes, and keeping those
-tucked away in their own file, so there shouldn't be much chance for collision.
+**Why are holders of state called "runes", and not "stores"?**
+
+"Store" is an overloaded term you'll find all over a codebase, in code,
+comments, and other documentation. "Rune" will be far more searchable.
+
+"Rune" also matches nicely with the name of the library, Runic.
+
+**Why the short names for utility functions like `patch` and `reset`?**
+
+Won't there be name collisions with my own code or other libraries?
+
+Ideally, you'll be writing your own getter/setter wrapper functions to
+work with your runes, and keeping those tucked away in their own file,
+so there shouldn't be much chance for collision.
 
 For example, here is one pattern you could adopt with RunicJS:
 
