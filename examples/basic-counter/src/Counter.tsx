@@ -1,10 +1,10 @@
-import { useStore } from '@runicjs/runic-react';
-import { counterStore, decrement, increment } from './counterStore';
+import { useRune } from '@runicjs/runic-react';
+import * as counter from './counter';
 import './index.css';
 
 const Count = () => {
-  const count = useStore(counterStore, (counter) => counter.count);
-  const doubled = useStore(counterStore, (counter) => counter.count * 2);
+  const count = useRune(counter.rune, (counter) => counter.count);
+  const doubled = useRune(counter.rune, (counter) => counter.count * 2);
 
   return (
     <div className="text-2xl">
@@ -19,8 +19,8 @@ export default function Counter() {
       <Count />
 
       <div className="flex flex-row gap-4 items-center">
-        <button onClick={decrement}>-</button>
-        <button onClick={increment}>+</button>
+        <button onClick={counter.decrement}>-</button>
+        <button onClick={counter.increment}>+</button>
       </div>
     </div>
   );

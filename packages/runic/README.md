@@ -22,6 +22,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 ## Roadmap
 
 - [ ] Move to a new API design (`createState` -> `rune`).
+  - [ ] Should I rename `rune()` to `createRune()`?
 - [ ] Test that `patch` does not modify the current state object directly, but returns a new one.
 - [ ] Move all of the listener logic out of `rune` and into a separate class.
 - [ ] Test `update` with primitive types.
@@ -68,13 +69,13 @@ import { update } from '@runicjs/runic/integrations/mutative';
 const person1 = rune({ name: 'Joe', age: 25 });
 const person1 = rune({ name: 'Jane', age: 26 });
 
-update(person1, (person1Draft) => {
-  person1Draft.age = 26;
+update(person1, (draft) => {
+  draft.age = 26;
 }); // use immer or mutative to make changes
 
-update([person1, person2], ([person1Draft, person2Draft]) => {
-  person1Draft.age = 30;
-  person2Draft.age = 31;
+update([person1, person2], ([p1, p2]) => {
+  p1.age = 30;
+  p2.age = 31;
 }); // use immer or mutative to change multiple stores together
 ```
 
@@ -152,9 +153,11 @@ Here are some guidelines you may find helpful when naming things:
 1. Things returned by `rune` are "runes".
 2. The type passed to `rune<Type>` is the "state type".
 3. State types should follow the convention `NounState`, e.g. `PersonState`.
-4. Runes should follow the convention `noun = rune()`, e.g. `const person = rune<PersonState>(...)`
-5. When using `update`, drafts should follow the convention `nounDraft`, e.g. `personDraft`.
-6. The values returned by `get`, `last`, and `initial` are "states".
+4. Runes should follow the convention `noun = rune()`, e.g. `const person = rune<PersonState>(...)`.
+5. When using `update`, drafts should follow the convention `nounDraft`, e.g. `personDraft`., or just `draft`.
+6. You may shorten draft names if it improves readability, e.g. `update([person1, person2], ([p1, p2]) => { ... })`.
+   Compare that to `update([person1, person2], ([person1Draft, person2Draft]) => { ... })`.
+7. The values returned by `get`, `last`, and `initial` are "states".
 
 Here's a full example:
 
@@ -209,8 +212,8 @@ const unsubscribe = counter.subscribe((state) => {
 patch({ count: 5 });
 
 // Update state (changes are made immutably via Immer)
-update(counter, (counterDraft) => {
-  counterDraft.count += 1;
+update(counter, (draft) => {
+  draft.count += 1;
 });
 
 // No more state updates.
@@ -235,8 +238,8 @@ const todoList = rune<TodoListState>({
 
 // Write simple functions to update your stores.
 function addTodo(newTodo: Todo) {
-  update(todoList, (todoListDraft) => {
-    todoListDraft.todos.push(newTodo);
+  update(todoList, (draft) => {
+    draft.todos.push(newTodo);
   });
 }
 
