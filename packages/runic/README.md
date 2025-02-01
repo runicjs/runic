@@ -22,6 +22,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 ## Roadmap
 
 - [ ] Move to a new API design (`createState` -> `rune`).
+- [ ] Test that `patch` does not modify the current state object directly, but returns a new one.
 - [ ] Move all of the listener logic out of `rune` and into a separate class.
 - [ ] Test `update` with primitive types.
 - [ ] Test store.destroy()

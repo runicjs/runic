@@ -2,123 +2,116 @@ import { patch, rune } from '@runicjs/runic';
 import { update } from '@runicjs/runic/integrations/immer';
 import { act, render, renderHook } from '@testing-library/react';
 import useRunes from '../useRunes';
-import { Vector2, Vector3 } from './types';
+import { Vector2State, Vector3State } from './types';
 import { createRerenderTestComponent } from './utils';
 
 describe('useRunes', () => {
   it('should return the current state', () => {
-    const vec1Store = rune<Vector2>({ x: 0, y: 1 });
-    const vec2Store = rune<Vector2>({ x: 2, y: 3 });
+    const vector1 = rune<Vector2State>({ x: 0, y: 1 });
+    const vector2 = rune<Vector2State>({ x: 2, y: 3 });
     const { result } = renderHook(() =>
-      useRunes([vec1Store, vec2Store], ([vec1, vec2]) => ({
-        x: vec1.x + vec2.x,
-        y: vec1.y + vec2.y,
+      useRunes([vector1, vector2], ([v1, v2]) => ({
+        x: v1.x + v2.x,
+        y: v1.y + v2.y,
       })),
     );
     expect(result.current).toEqual({ x: 2, y: 4 });
   });
 
   it('should update when any passed store state changes', () => {
-    const vec1Store = rune<Vector2>({ x: 0, y: 1 });
-    const vec2Store = rune<Vector2>({ x: 2, y: 3 });
+    const vector1 = rune<Vector2State>({ x: 0, y: 1 });
+    const vector2 = rune<Vector2State>({ x: 2, y: 3 });
     const { result } = renderHook(() =>
-      useRunes([vec1Store, vec2Store], ([vec1, vec2]) => ({
-        x: vec1.x + vec2.x,
-        y: vec1.y + vec2.y,
+      useRunes([vector1, vector2], ([v1, v2]) => ({
+        x: v1.x + v2.x,
+        y: v1.y + v2.y,
       })),
     );
     expect(result.current).toEqual({ x: 2, y: 4 });
-    act(() => patch(vec1Store, { x: 1 }));
+    act(() => patch(vector1, { x: 1 }));
     expect(result.current).toEqual({ x: 3, y: 4 });
-    act(() => patch(vec2Store, { y: 5 }));
+    act(() => patch(vector2, { y: 5 }));
     expect(result.current).toEqual({ x: 3, y: 6 });
   });
 
   it('should unsubscribe when the component unmounts', () => {
-    const vec1Store = rune<Vector2>({ x: 0, y: 1 });
-    const vec2Store = rune<Vector2>({ x: 2, y: 3 });
+    const vector1 = rune<Vector2State>({ x: 0, y: 1 });
+    const vector2 = rune<Vector2State>({ x: 2, y: 3 });
     const { result, unmount } = renderHook(() =>
-      useRunes([vec1Store, vec2Store], ([vec1, vec2]) => ({
-        x: vec1.x + vec2.x,
-        y: vec1.y + vec2.y,
+      useRunes([vector1, vector2], ([v1, v2]) => ({
+        x: v1.x + v2.x,
+        y: v1.y + v2.y,
       })),
     );
     unmount();
     act(() => {
-      patch(vec1Store, { x: 1 });
-      patch(vec2Store, { y: 5 });
+      patch(vector1, { x: 1 });
+      patch(vector2, { y: 5 });
     });
     expect(result.current).toEqual({ x: 2, y: 4 });
   });
 
   it('should rerender when the selected state changes', () => {
-    const vec1Store = rune<Vector2>({ x: 0, y: 1 });
-    const vec2Store = rune<Vector2>({ x: 2, y: 3 });
+    const vector1 = rune<Vector2State>({ x: 0, y: 1 });
+    const vector2 = rune<Vector2State>({ x: 2, y: 3 });
 
     const renderSpy = vi.fn();
-    const selectVectorAdd = ([vec1, vec2]: [Vector2, Vector2]): Vector2 => ({
-      x: vec1.x + vec2.x,
-      y: vec1.y + vec2.y,
+    const selectVectorAdd = ([v1, v2]: [Vector2State, Vector2State]): Vector2State => ({
+      x: v1.x + v2.x,
+      y: v1.y + v2.y,
     });
-    const TestComponent = createRerenderTestComponent(
-      () => useRunes([vec1Store, vec2Store], selectVectorAdd),
-      renderSpy,
-    );
+    const TestComponent = createRerenderTestComponent(() => useRunes([vector1, vector2], selectVectorAdd), renderSpy);
     render(<TestComponent />);
 
     expect(renderSpy).toHaveBeenCalledTimes(1);
-    act(() => patch(vec1Store, { x: 1 }));
+    act(() => patch(vector1, { x: 1 }));
     expect(renderSpy).toHaveBeenCalledTimes(2);
-    act(() => patch(vec2Store, { y: 5 }));
+    act(() => patch(vector2, { y: 5 }));
     expect(renderSpy).toHaveBeenCalledTimes(3);
   });
 
   it('should not rerender when non-selected state changes', () => {
-    const vec1Store = rune<Vector3>({ x: 0, y: 1, z: 2 });
-    const vec2Store = rune<Vector3>({ x: 3, y: 4, z: 5 });
+    const vector1 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector2 = rune<Vector3State>({ x: 3, y: 4, z: 5 });
 
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(
-      () =>
-        useRunes([vec1Store, vec2Store], ([vec1, vec2]) => ({
-          x: vec1.x + vec2.x,
-          y: vec1.y + vec2.y,
-        })),
+      () => useRunes([vector1, vector2], ([v1, v2]) => v1.x + v2.x),
       renderSpy,
     );
     render(<TestComponent />);
 
     expect(renderSpy).toHaveBeenCalledTimes(1);
-    act(() => patch(vec1Store, { z: 6 }));
+    act(() => patch(vector1, { z: 6 }));
     expect(renderSpy).toHaveBeenCalledTimes(1);
-    act(() => patch(vec2Store, { z: 7 }));
+    act(() => patch(vector2, { z: 7 }));
     expect(renderSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should not rerender when the selected state does not change', () => {
-    const vec1Store = rune<Vector3>({ x: 0, y: 1, z: 2 });
-    const vec2Store = rune<Vector3>({ x: 3, y: 4, z: 5 });
+    const vector1 = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vector2 = rune<Vector3State>({ x: 3, y: 4, z: 5 });
 
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(
-      () => useRunes([vec1Store, vec2Store], ([vec1, vec2]) => vec1.x + vec2.x),
+      () => useRunes([vector1, vector2], ([v1, v2]) => v1.x + v2.x),
       renderSpy,
     );
     render(<TestComponent />);
 
     expect(renderSpy).toHaveBeenCalledTimes(1);
-    act(() => patch(vec1Store, { x: 0 }));
+    act(() => patch(vector1, { x: 0 }));
     expect(renderSpy).toHaveBeenCalledTimes(1);
-    act(() => patch(vec2Store, { y: 4 }));
+    act(() => patch(vector2, { y: 4 }));
     expect(renderSpy).toHaveBeenCalledTimes(1);
   });
 
   it('should rerender when the update callback changes selected data in the draft', () => {
-    const vec1Store = rune<Vector2>({ x: 0, y: 1 });
-    const vec2Store = rune<Vector2>({ x: 2, y: 3 });
+    const vec1Store = rune<Vector2State>({ x: 0, y: 1 });
+    const vec2Store = rune<Vector2State>({ x: 2, y: 3 });
 
     const renderSpy = vi.fn();
-    const selectVectorAdd = ([vec1, vec2]: [Vector2, Vector2]): Vector2 => ({
+    const selectVectorAdd = ([vec1, vec2]: [Vector2State, Vector2State]): Vector2State => ({
       x: vec1.x + vec2.x,
       y: vec1.y + vec2.y,
     });
@@ -144,8 +137,8 @@ describe('useRunes', () => {
   });
 
   it('should not rerender when the update callback does not change selected data in the draft', () => {
-    const vec1Store = rune<Vector3>({ x: 0, y: 1, z: 2 });
-    const vec2Store = rune<Vector3>({ x: 3, y: 4, z: 5 });
+    const vec1Store = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vec2Store = rune<Vector3State>({ x: 3, y: 4, z: 5 });
 
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(
@@ -174,8 +167,8 @@ describe('useRunes', () => {
   });
 
   it('should not rerender when the update callback changes unselected data in the draft', () => {
-    const vec1Store = rune<Vector3>({ x: 0, y: 1, z: 2 });
-    const vec2Store = rune<Vector3>({ x: 3, y: 4, z: 5 });
+    const vec1Store = rune<Vector3State>({ x: 0, y: 1, z: 2 });
+    const vec2Store = rune<Vector3State>({ x: 3, y: 4, z: 5 });
 
     const renderSpy = vi.fn();
     const TestComponent = createRerenderTestComponent(

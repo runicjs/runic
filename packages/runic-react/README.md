@@ -7,6 +7,7 @@ Runic React provides tools for working with Runic in React.
 
 ## Roadmap
 
+- [ ] Test custom equalityFns, like deepEqual.
 - [ ] Test selector that relies on a value from another selector that just changed
 - [ ] Test default selector (entire state)
 - [ ] Test creating stores dynamically (e.g. in a Context) and destroying them
