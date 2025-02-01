@@ -1,5 +1,5 @@
 import { memo, useCallback, useEffect, useState } from 'react';
-import { removeTodo, setTodoCompletionStatus, setTodoText } from '../actions';
+import * as app from '../stores/app';
 import { Todo as TodoModel } from '../types';
 
 const Todo = memo(({ todo }: { todo: TodoModel }) => {
@@ -17,7 +17,7 @@ const Todo = memo(({ todo }: { todo: TodoModel }) => {
   const onEditKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       if (event.key === 'Enter') {
-        setTodoText(todo.id, event.currentTarget.value?.trim() || '');
+        app.setTodoText(todo.id, event.currentTarget.value?.trim() || '');
         setIsEditing(false);
       } else if (event.key === 'Escape') {
         setEditText(todo.text);
@@ -32,11 +32,11 @@ const Todo = memo(({ todo }: { todo: TodoModel }) => {
   }, []);
 
   const onTodoToggle = useCallback(() => {
-    setTodoCompletionStatus(todo.id, !todo.completed);
+    app.setTodoCompletionStatus(todo.id, !todo.completed);
   }, [todo.id, todo.completed]);
 
   const onTodoDestroy = useCallback(() => {
-    removeTodo(todo.id);
+    app.removeTodo(todo.id);
   }, [todo.id]);
 
   return (

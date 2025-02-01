@@ -1,10 +1,11 @@
-import { useStore } from '@runicjs/runic-react';
-import { AppState, appStore, selectIncompleteTodos } from '../stores';
+import { useRune } from '@runicjs/runic-react';
+import * as app from '../stores/app';
 
-const selectIncompleteCount = (state: AppState) => selectIncompleteTodos(state).length;
+// TODO: Why does this need to be outside of the component?
+const selectIncompleteCount = (state: app.State) => app.selectIncompleteTodos(state).length;
 
 export default function RemainingCount() {
-  const incompleteCount = useStore(appStore, selectIncompleteCount);
+  const incompleteCount = useRune(app.rune, selectIncompleteCount);
 
   return (
     <span className="todo-count">

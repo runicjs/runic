@@ -1,17 +1,16 @@
-import { useStore } from '@runicjs/runic-react';
-import { setFilter } from '../actions';
-import { appStore, selectFilter } from '../stores';
+import { useRune } from '@runicjs/runic-react';
+import * as app from '../stores/app';
 import { Filter } from '../types';
 
 const FilterList: Array<Filter> = ['all', 'active', 'completed'];
 
 export default function Filters() {
-  const appFilter = useStore(appStore, selectFilter);
+  const appFilter = useRune(app.rune, app.selectFilter);
 
   const onFilterChange = (filter: Filter) => {
     return (event: React.MouseEvent<HTMLAnchorElement>) => {
       event.preventDefault();
-      setFilter(filter);
+      app.setFilter(filter);
     };
   };
 

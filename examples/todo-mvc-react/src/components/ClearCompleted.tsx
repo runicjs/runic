@@ -1,18 +1,18 @@
-import { useStore } from '@runicjs/runic-react';
-import { clearCompletedTodos } from '../actions';
-import { AppState, appStore } from '../stores';
+import { useRune } from '@runicjs/runic-react';
+import * as app from '../stores/app';
 
-const selectHasCompletedTodos = (state: AppState) => state.todos.some((todo) => todo.completed);
+// TODO: Why does this need to be outside of the component?
+const selectHasCompletedTodos = (state: app.State) => state.todos.some((todo) => todo.completed);
 
 export default function Filters() {
-  const hasCompletedTodos = useStore(appStore, selectHasCompletedTodos);
+  const hasCompletedTodos = useRune(app.rune, selectHasCompletedTodos);
 
   if (!hasCompletedTodos) {
     return null;
   }
 
   return (
-    <button className="clear-completed" onClick={clearCompletedTodos}>
+    <button className="clear-completed" onClick={app.clearCompletedTodos}>
       Clear completed
     </button>
   );

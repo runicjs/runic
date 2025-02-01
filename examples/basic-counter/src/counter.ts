@@ -1,11 +1,11 @@
 import { rune as runicRune } from '@runicjs/runic';
 import { update } from '@runicjs/runic/integrations/immer';
 
-export type CounterState = {
+export type State = {
   count: number;
 };
 
-export const rune = runicRune<CounterState>({
+export const rune = runicRune<State>({
   count: 0,
 });
 
