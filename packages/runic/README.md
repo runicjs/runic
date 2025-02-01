@@ -116,17 +116,17 @@ export type TodoListState = {
   todos: Array<Todo>;
 };
 
-export const state = createRune<TodoListState>({
+export const rune = createRune<TodoListState>({
   filter: 'all',
   todos: [],
 });
 
 export const setFilter = (filter: Filter): void => {
-  patch(state, { filter });
+  patch(rune, { filter });
 };
 
 export const addTodo = (newTodo: Todo): void => {
-  update(state, (draft) => {
+  update(rune, (draft) => {
     draft.todos.push(newTodo);
   });
 };
@@ -135,7 +135,7 @@ export const addTodo = (newTodo: Todo): void => {
 
 import * as todoList from './stores/todoList';
 
-todoList.state.subscribe((state) => {
+todoList.rune.subscribe((state) => {
   // Update your UI...
 });
 
