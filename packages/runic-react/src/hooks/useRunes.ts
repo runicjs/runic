@@ -17,6 +17,9 @@ export default function useRunes<T extends unknown[], Value>(
 
   useEffect(() => {
     const callback = () => {
+      // TODO: Fix zombie children pre React 18.
+      // unstable_batchedUpdates(() => { setValue(...) });
+
       setValue((last) => {
         const next = selector(getStates(runes));
         if (equalityFn(last, next)) return last;

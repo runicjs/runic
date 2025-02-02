@@ -13,7 +13,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 - Simple API with a plain JavaScript approach to state updates
 - Updates powered by [Immer](https://immerjs.github.io/immer/) or [Mutative](https://mutative.js.org/) to avoid excessive boilerplate
 - Full TypeScript support with strong type inference
-- Core implementation is ~25 sloc and has no dependencies
+- Core implementation is just a few dozen sloc and has no dependencies
 - Optional integrations with Immer, Mutative, and more
 - Efficient updates through granular change detection and selective re-rendering
 - Support for atomic multi-store updates to maintain data consistency
@@ -22,17 +22,33 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 ## Roadmap
 
 - [x] Move to a new API design (`createStore` -> `createRune`).
+- [ ] Update react and react-dom peerDependencies to ^16.8.0 and above.
+- [ ] Test unsubscribing in the middle of notification.
 - [ ] Test that `patch` does not modify the current state object directly, but returns a new one.
-- [ ] Move all of the listener logic out of `rune` and into a separate class.
+- [ ] Move all of the listener logic out of `createRune` and into a separate class.
 - [ ] Test `update` with primitive types.
-- [ ] Test store.destroy()
-- [ ] Think about middleware
-- [ ] Come up with a solution for persistence
-- [ ] Come up with a solution for logging
-- [ ] Come up with a solution for error reporting
-- [ ] Finalize the v0 API
-- [ ] Implement remaining functionality
-- [ ] Implement TodoMVC in vanilla JS using runic
+- [ ] Test store.destroy().
+- [ ] Think about middleware.
+  - [ ] Persist to synchronouse storage (localStorage, sessionStorage, URL, etc)
+        Inspiration: https://github.com/pmndrs/zustand/blob/main/docs/guides/connect-to-state-with-url-hash.md
+  - [ ] Logging
+  - [ ] Crash reporting
+  - [ ] Integrated updates via a producer function (e.g. `rune.update(draft => ...)`).
+  - [ ] What else?
+- [ ] What about global middleware that affect all runes?
+  - [ ] You could do global undo/redo.
+- [ ] Is there a clean solution for batched updates?
+- [ ] Make a clone of listeners during notification in case unsubscription happens during notification.
+- [ ] Come up with a solution for persistence.
+- [ ] Come up with a solution for logging.
+- [ ] Come up with a solution for error reporting.
+- [ ] Finalize the v0 API.
+- [ ] Implement remaining functionality.
+- [ ] Implement TodoMVC in vanilla JS using runic.
+- [ ] Consider moving all integrations to their own package, e.g. runic-immer, runic-mutative, etc.
+- [ ] Add integrations for RxJS and similar libraries.
+- [ ] Add integrations for other state management libraries like Jotai.
+- [ ] Should I memoize selector functions based on their arguments?
 
 ## API
 

@@ -16,10 +16,13 @@ export default function useRune<State, Value>(
   selector: (state: State) => Value = (v) => v as unknown as Value,
   equalityFn: RunicEqualityFn<Value> = defaultEqualityFn,
 ): Value {
-  const [value, setValue] = useState<Value>(selector(rune.get()));
+  const [value, setValue] = useState<Value>(() => selector(rune.get()));
 
   useEffect(() => {
     return rune.subscribe((state) => {
+      // TODO: Fix zombie children pre React 18.
+      // unstable_batchedUpdates(() => { setValue(...) });
+
       setValue((last) => {
         const next = selector(state);
         if (equalityFn(last, next)) return last;

@@ -12,3 +12,14 @@ export type Vector3State = {
   y: number;
   z: number;
 };
+
+export type Todo = {
+  id: string;
+  text: string;
+  done: boolean;
+};
+
+export type TodoListState = {
+  filter: string;
+  todos: Todo[];
+};

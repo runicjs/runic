@@ -2,7 +2,7 @@
 
 ## Creating a rune
 
-```typescript
+```ts
 type CounterState = {
   count: number;
 };
@@ -14,19 +14,19 @@ const counter = createRune<CounterState>({
 
 ## Getting the current state
 
-```typescript
+```ts
 counter.get(); // { count: 0 }
 ```
 
 ## Replacing the state
 
-```typescript
+```ts
 counter.set({ count: 1 }); // { count: 1 }
 ```
 
 ## Subscribing to state changes
 
-```typescript
+```ts
 const unsubscribe = counter.subscribe((counterState) => {
   console.log(counterState); // { count: 2 } after call to set() below
 });
@@ -38,7 +38,7 @@ unsubscribe(); // unsubscribed
 
 ## Merging a partial state into the rune
 
-```typescript
+```ts
 type Vector2 = {
   x: number;
   y: number;
@@ -51,13 +51,13 @@ patch(vector, { x: 3 }); // { x: 3, y: 2 }
 
 ## Resetting the state back to the initial state
 
-```typescript
+```ts
 reset(counter); // { count: 0 }
 ```
 
 ## Updating state with Immer
 
-```typescript
+```ts
 import { update } from '@runicjs/runic/integrations/immer';
 
 const counter1 = createRune<Counter>({ x: 0 });
@@ -75,23 +75,40 @@ update([counter1, counter2], ([counter1Draft, counter2Draft]) => {
 
 ## Updating state with Mutative
 
-```typescript
+```ts
 import { update } from '@runicjs/runic/integrations/mutative';
 // Same as Immer...
 ```
 
-## Using a selector
+## Using rune state in React with useRune
 
-```typescript
+```tsx
+const increment = () => {
+  update(counter, (draft) => {
+    counter.count++;
+  });
+};
+
+const decrement = () => {
+  update(counter, (draft) => {
+    counter.count--;
+  });
+};
+
 const Counter = () => {
-  const count = useRune(counter, (counterState) => counterState.count);
-  return <div>{count}</div>; // <div>0</div>
+  const count = useRune(counter, (state) => state.count);
+  return (
+    <div>
+      <button onClick={increment}>+</button>
+      <button onClick={decrement}>-</button>
+    </div>
+  );
 };
 ```
 
 ## Using multiple runes
 
-```typescript
+```tsx
 const vector1 = createRune<Vector2>({ x: 1, y: 2 });
 const vector2 = createRune<Vector2>({ x: 3, y: 4 });
 
