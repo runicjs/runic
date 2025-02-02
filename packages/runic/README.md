@@ -23,6 +23,7 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
 
 - [x] Move to a new API design (`createStore` -> `createRune`).
 - [ ] Update react and react-dom peerDependencies to ^16.8.0 and above.
+- [ ] Try to reproduce stale props (e.g. the zombie children problem) and fix it (unstable_batchedUpdates).
 - [ ] Test unsubscribing in the middle of notification.
 - [ ] Test that `patch` does not modify the current state object directly, but returns a new one.
 - [ ] Move all of the listener logic out of `createRune` and into a separate class.
@@ -39,16 +40,28 @@ such as [Runic React](https://github.com/runicjs/runic/tree/master/packages/runi
   - [ ] You could do global undo/redo.
 - [ ] Is there a clean solution for batched updates?
 - [ ] Make a clone of listeners during notification in case unsubscription happens during notification.
+- [ ] Is there a nice solution for derived state in vanilla JS that only changes when the source state changes?
+- [ ] Simplify type names, e.g. `RunicRune` -> `Rune`.
+- [ ] Should selector functions be memoized based on their arguments? Configurable? Middleware?
+- [ ] Should state updates be (shallow-)compared against the last state to prevent unnecessary notifications? Configurable? Middleware?
+- [ ] Are there errors we can throw as early warnings in dev, when users do weird things?
 - [ ] Come up with a solution for persistence.
 - [ ] Come up with a solution for logging.
 - [ ] Come up with a solution for error reporting.
 - [ ] Finalize the v0 API.
 - [ ] Implement remaining functionality.
 - [ ] Implement TodoMVC in vanilla JS using runic.
-- [ ] Consider moving all integrations to their own package, e.g. runic-immer, runic-mutative, etc.
 - [ ] Add integrations for RxJS and similar libraries.
 - [ ] Add integrations for other state management libraries like Jotai.
-- [ ] Should I memoize selector functions based on their arguments?
+- [ ] Create more integrations.
+- [ ] Consider moving all integrations to their own package, e.g. runic-immer, runic-mutative, etc.
+- [ ] Create docs for how to create integrations & middleware.
+- [ ] Create guides in <root>/guides/ for how to use runic and it's various packages. This will be the precursor to a true documentation site (likely on github pages).
+- [ ] Get better at TypeScript. Inspiration:
+  - https://www.typescriptlang.org/docs/handbook/2/types-from-types.html
+  - https://github.com/reduxjs/redux-toolkit/blob/4ab8c42cb20ae1e6f7b84a8ac0070eee54775b79/packages/toolkit/src/createAction.ts#L58
+  - https://github.com/reduxjs/redux-toolkit/blob/4ab8c42cb20ae1e6f7b84a8ac0070eee54775b79/packages/toolkit/src/createAction.ts#L193
+- [ ] Try to fix any types that aren't fully implemented yet.
 
 ## API
 

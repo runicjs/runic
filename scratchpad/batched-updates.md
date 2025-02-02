@@ -1,3 +1,5 @@
+# Batched Updates
+
 ```ts
 import { batch } from 'runic-react';
 
